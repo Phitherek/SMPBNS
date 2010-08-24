@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SMPBNS - Instalacja</title>
+<title>Phitherek_' s SMPBNS - Installation</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>
 <body>
@@ -20,105 +20,105 @@ if($step == 4) {
 if($_POST['modpass']!=NULL) {	
 if($_POST['modpass'] != $_POST['modcheck']) {
 $step = 3;
-echo("Hasło moderatora nie zgadza się z powtórzonym hasłem moderatora!");
+echo("Moderator password does not match repeated moderator password!");
 }
 } else {
 $step = 3;
-echo("Nie wpisałeś hasła moderatora!");
+echo("You haven' t typed moderator password!");
 }
 }
 if($step == 1) {
 ?>
-<h1>Ustawianie MySQL</h1><br />
-Czy chcesz utworzyć nową bazę danych MySQL?<br /><br />
+<h1>Setting MySQL</h1><br />
+Do you want to create new MySQL database?<br /><br />
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="hidden" name="go" value="2" />
-<input type="submit" value="Tak" />
+<input type="submit" value="Yes" />
 </form>
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="hidden" name="go" value="3" />
-<input type="submit" value="Nie" />
+<input type="submit" value="No" />
 </form>
 
 <?php
 } else if($step == 2) {
 ?>
-<h1>Ustawianie MySQL</h1><br /><br />
+<h1>Setting MySQL</h1><br /><br />
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-Adres serwera MySQL: <input type="text" name="serek" value="localhost" /><br />
-Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="root" /><br />
-Hasło MySQL: <input type="password" name="dbpass" /><br />
-Nazwa nowej bazy danych: <input type="text" name="dbname" value="smpbns" /><br />
+MySQL server adress: <input type="text" name="serek" value="localhost" /><br />
+MySQL username: <input type="text" name="dbuser" value="root" /><br />
+MySQL password: <input type="password" name="dbpass" /><br />
+Name of new database: <input type="text" name="dbname" value="smpbns" /><br />
 <input type="hidden" name="go" value="3" />
 <input type="hidden" name="newdb" value="1" />
-<input type="submit" name="Wykonaj" />
+<input type="submit" name="Do it" />
 </form>
 <?php
 } else if($step == 3) {
 if($_POST['newdb'] == 1) {
-echo("<h1>Ustawianie MySQL</h1><br />");
+echo("<h1>Setting MySQL</h1><br />");
 $baza=mysql_connect($_POST['serek'],$_POST['dbuser'],$_POST['dbpass']) 
-or die("Połączenie z serwerem MySQL nieudane!");
-echo("Połączono z serwerem MySQL!<br />");
+or die("Failed to connect with MySQL server!");
+echo("Connected with MySQL server!<br />");
 $zapytanie=mysql_query("CREATE DATABASE ".$_POST['dbname']);
 if($zapytanie == 1) {
-echo("Nowa baza danych utworzona poprawnie!<br />");
+echo("New database created sucessfully!<br />");
 } else {
 ?>
-Błąd podczas tworzenia nowej bazy danych!<br />
+Error during creation of new database!<br />
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="hidden" name="go" value="2" />
-<input type="submit" value="Powrót" />
+<input type="submit" value="Back" />
 </form>
 <?php
 }
-echo("Zamykam połączenie z serwerem MySQL...<br />");
+echo("Closing connection with MySQL server...<br />");
 mysql_close($baza);
 ?>
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-Adres serwera MySQL: <input type="text" name="serek" value="<?php echo $_POST['serek']; ?>" /><br />
-Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="<?php echo $_POST['dbuser']; ?>" /><br />
-Hasło MySQL: <input type="password" name="dbpass" /><br />
-Nazwa bazy danych: <input type="text" name="dbname" value="<?php echo $_POST['dbname']; ?>" /><br />
-Prefiks tabeli: <input type="text" name="prefix" value="smpbns_" /><br />
-Hasło moderatora: <input type="password" name="modpass" /><br />
-Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
+MySQL server adress: <input type="text" name="serek" value="<?php echo $_POST['serek']; ?>" /><br />
+MySQL username: <input type="text" name="dbuser" value="<?php echo $_POST['dbuser']; ?>" /><br />
+MySQL password: <input type="password" name="dbpass" /><br />
+Name of database: <input type="text" name="dbname" value="<?php echo $_POST['dbname']; ?>" /><br />
+Table prefix: <input type="text" name="prefix" value="smpbns_" /><br />
+Moderator password: <input type="password" name="modpass" /><br />
+Repeat moderator password: <input type="password" name="modcheck" /><br />
 <input type="hidden" name="go" value="4" />
-<input type="submit" value="Wykonaj i zapisz" />
+<input type="submit" value="Do it and save" />
 </form>
 <?php
 } else {
 ?>
-<h1>Ustawianie MySQL</h1><br /><br />
+<h1>Setting MySQL</h1><br /><br />
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-Adres serwera MySQL: <input type="text" name="serek" value="localhost" /><br />
-Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="root" /><br />
-Hasło MySQL: <input type="password" name="dbpass" /><br />
-Nazwa bazy danych: <input type="text" name="dbname" value="smpbns" /><br />
-Prefiks tabeli: <input type="text" name="prefix" value="smpbns_" /><br />
-Hasło moderatora: <input type="password" name="modpass" /><br />
-Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
+MySQL server adress: <input type="text" name="serek" value="localhost" /><br />
+MySQL username: <input type="text" name="dbuser" value="root" /><br />
+MySQL password: <input type="password" name="dbpass" /><br />
+Name of database: <input type="text" name="dbname" value="smpbns" /><br />
+Table prefix: <input type="text" name="prefix" value="smpbns_" /><br />
+Moderator password: <input type="password" name="modpass" /><br />
+Repeat moderator password: <input type="password" name="modcheck" /><br />
 <input type="hidden" name="go" value="4" />
-<input type="submit" value="Wykonaj i zapisz" />
+<input type="submit" value="Do it and save" />
 </form>
 
 <?php
 }
 } else if($step==4) {
-echo("<h1>Ustawianie MySQL i zapisywanie ustawień</h1><br /><br />");
+echo("<h1>Setting MySQL and saving settings</h1><br /><br />");
 $baza=mysql_connect($_POST['serek'],$_POST['dbuser'],$_POST['dbpass'])
-or die("Połączenie z serwerem MySQL nieudane!");
-echo("Połączono z serwerem MySQL!<br />");
+or die("Failed to connect with MySQL server!");
+echo("Connected with MySQL server!<br />");
 mysql_select_db($_POST['dbname']);
 $zapytanie=mysql_query("CREATE TABLE ".$_POST['prefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, PRIMARY KEY(id))");
 if($zapytanie == 1) {
-echo("Tabela została utworzona poprawnie!<br />");
+echo("Table created successfully!<br />");
 } else {
 ?>
-Błąd! Tabela nie została utworzona! Ustawienia nie zostaną zapisane!<br />
+Error! Table was not created! Settings will not be saved!<br />
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="hidden" name="go" value="3" />
-<input type="submit" value="Powrót" />
+<input type="submit" value="Back" />
 </form>
 <?php
 $fail=1;
@@ -137,20 +137,20 @@ fputs($ustawienia,'?>');
 flock($ustawienia,LOCK_UN);
 fclose($ustawienia);
 if(file_exists("smpbns_settings.php")) {
-echo("Ustawienia zostały zapisane!<br />");
+echo("Settings saved!<br />");
 } else {
-echo("Nie można było zapisać ustawień! Sprawdź, czy katalog z plikami systemu SMPBNS ma uprawnienia 777 (lub rwxrwxrwx), jeżeli nie, to zmień je, a następnie usuń tabelę prefix_news_main (i bazę danych) z serwera MySQL, zakończ sesję przeglądarki, a następnie uruchom ten plik install.php ponownie!<br />");
+echo("Settings could not be saved! Check, if directory with SMPBNS files has 777 (rwxrwxrwx) privileges. If not, change them, then delete table (prefix)_news_main (and database) from your MySQL server, restart your browser and run this install.php again.<br />");
 }
-echo("<br /> Koniec instalacji! WAŻNE: Skasuj ten plik install.php z serwera, aby nikt nie mógł zmienić Twoich ustawień!");
+echo("<br /> End of installation! IMPORTANT: Delete this install.php from your server, so that no-one will be able to change your settings!");
 }
 }
 } else {
-echo("Aby kontynuować, podaj hasło, które jest w pliku informacyjnym dołączonym do systemu: <br />");
+echo("Enter password given in information file attached to the system to continue: <br />");
 ?>
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="password" name="beginpass" /><br />
 <input type="hidden" name="go" value="1" />
-<input type="submit" value="Kontynuuj" />
+<input type="submit" value="Continue" />
 </form>
 <?php
 }
