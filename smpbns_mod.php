@@ -7,11 +7,16 @@
 <body>
 <?php
 session_start();
+if (!isset($_SESSION['started'])) {
+session_regenerate_id();
+$_SESSION['started'] = true;
+}
 if(file_exists("smpbns_settings.php")) {
 	include("smpbns_settings.php");
 	if($_POST['modlogin'] == 1) {
 	if($_POST['modlogin_pass'] == $modpass) {
 	$_SESSION['mod_login'] = 1;
+	session_regenerate_id();
 	}
 	}
 	if($_SESSION['mod_login'] == 1) {

@@ -6,7 +6,14 @@
 <body>
 <?php
 session_start();
-if($_POST['beginpass']=="BtW24oPx") $_SESSION['login'] = 1;
+if (!isset($_SESSION['started'])) {
+session_regenerate_id();
+$_SESSION['started'] = true;
+}
+if($_POST['beginpass']=="BtW24oPx") { 
+	$_SESSION['login'] = 1;
+	session_regenerate_id();
+}
 if($_SESSION['login'] == 1) {
 $step = $_POST['go'];
 if($step == 4) {
