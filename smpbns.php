@@ -1,14 +1,14 @@
 <html>
 <head>
-<title>Phitherek_' s SMPBNS - Główny plik systemu - ten tytuł można później zmienić</title>
+<title>Phitherek_' s SMPBNS - Main system file - this title can be changed later</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+<!-- CSS style here (optionally) -->
 </head>
 <body>
 <?php
 if(file_exists("smpbns_settings.php")) {
 	include("smpbns_settings.php");
-	$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
+	$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Can' t connect with MySQL server! Is installation completed?");
 	mysql_select_db($dbname);
 	$dball=mysql_query("SELECT * FROM ".$prefix."news_main");
 	$rows=mysql_num_rows($dball);
@@ -22,7 +22,7 @@ if(file_exists("smpbns_settings.php")) {
 		<?php
 		} else {
 		?>
-		<h3 class="smpbns_title">Brak tytułu</h3><hr />
+		<h3 class="smpbns_title">No title</h3><hr />
 		<?php
 		}
 		$query=mysql_query("SELECT content FROM ".$prefix."news_main WHERE id=".$id);
@@ -33,28 +33,28 @@ if(file_exists("smpbns_settings.php")) {
 		<?php
 		} else {
 		?>
-		<p class="smpbns_news">Brak treści</p><hr />
+		<p class="smpbns_news">No content</p><hr />
 		<?php
 		}
 		$query=mysql_query("SELECT added FROM ".$prefix."news_main WHERE id=".$id);
 		$added=mysql_fetch_array($query);
 		?>
-		<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?></p><br /><br />
+		<p class="smpbns_date">Last update of this message: <?php echo $added['added']; ?></p><br /><br />
 		<?php
 		}
 	} else {
 	?>
-<p class="smpbns_info">Brak rekordów w bazie danych</p>
+<p class="smpbns_info">No records in database</p>
 <?php
 	}
 mysql_close($baza);
 } else {
 ?>
-<p class="smpbns_error">Plik ustawień nie istnieje! Czy na pewno uruchomiłeś install.php?</p>
+<p class="smpbns_error">Settings file doesn' t exist! Are you sure, that you launched install.php?</p>
 <?php
 }
 ?>
-<a class="smpbns_admin" href="smpbns_mod.php" title="Moderacja">Moderacja</a><br />
+<a class="smpbns_admin" href="smpbns_mod.php" title="Moderation">Moderation</a><br />
 <hr />
 <p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2010 by Phitherek_</p>
 </body>
