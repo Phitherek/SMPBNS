@@ -1,8 +1,8 @@
 <html>
 <head>
-<title>Phitherek_' s SMPBNS - System moderacji - tytuł może być później zmieniony</title>
+<title>Phitherek_' s SMPBNS - Moderation system - this title can be changed later</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+<!-- CSS style here (optionally) -->
 </head>
 <body>
 <?php
@@ -22,18 +22,18 @@ if(file_exists("smpbns_settings.php")) {
 	if($_SESSION['mod_login'] == 1) {
 	if(file_exists("install.php")) {
 	?>
-	<p class="smpbns_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś install.php!</p><br /><br />
+	<p class="smpbns_error">Serious security risk - you haven' t deleted install.php!</p><br /><br />
 	<?php
 	}
 	?>
-	<h2 class="smpbns_modmenu">Menu systemu moderacji:</h2><br /><br />
-	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_list" title="Wyświetl i moderuj aktualności">Wyświetl i moderuj aktualności</a><br />
-	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=add_new" title="Dodaj nową wiadomość">Dodaj nową wiadomość</a><br />
-	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=logout" title="Wyloguj">Wyloguj</a><br />
+	<h2 class="smpbns_modmenu">Moderation system menu:</h2><br /><br />
+	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_list" title="Show and moderate news">Show and moderate news</a><br />
+	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=add_new" title="Add a new message">Add a new message</a><br />
+	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=logout" title="Logout">Logout</a><br />
 	<hr />
 	<?php
 	if($_GET['action'] == "news_list") {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
+		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Can' t connect with MySQL server! Is installation completed?");
 		mysql_select_db($dbname);
 		$dball=mysql_query("SELECT * FROM ".$prefix."news_main");
 		$rows=mysql_num_rows($dball);
@@ -47,7 +47,7 @@ if(file_exists("smpbns_settings.php")) {
 			<?php
 			} else {
 			?>
-			<h3 class="smpbns_title">Brak tytułu</h3><hr />
+			<h3 class="smpbns_title">No title</h3><hr />
 			<?php
 			}
 				$query=mysql_query("SELECT content FROM ".$prefix."news_main WHERE id=".$id);
@@ -58,33 +58,33 @@ if(file_exists("smpbns_settings.php")) {
 				<?php
 				} else {
 				?>
-				<p class="smpbns_news">Brak treści</p><hr />
+				<p class="smpbns_news">No content</p><hr />
 				<?php
 				}
 				$query=mysql_query("SELECT added FROM ".$prefix."news_main WHERE id=".$id);
 				$added=mysql_fetch_array($query);
 				?>
-				<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?></p><br />
+				<p class="smpbns_date">Last update of this message: <?php echo $added['added']; ?></p><br />
 				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_edit" method="post">
 				<input type="hidden" name="id" value=<?php echo $id; ?> />
-				<input type="submit" value="Edytuj" />
+				<input type="submit" value="Edit" />
 				</form>
 				<br />
 				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_delete" method="post">
 				<input type="hidden" name="id" value=<?php echo $id; ?> />
-				<input type="submit" value="Usuń" />
+				<input type="submit" value="Delete" />
 				</form>
 				<?php
 			}
 		} else {
 		?>
-		<p class="smpbns_info">Brak rekordów w bazie danych</p>
+		<p class="smpbns_info">No records in database</p>
 		<?php
 		}
 		mysql_close($baza);
 	} else if($_GET['action'] == "add_new") {
 	if($_POST['newset'] == 1) {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
+		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Can' t connect with MySQL server! Is installation completed?");
 		mysql_select_db($dbname);
 		$dball=mysql_query("SELECT * FROM ".$prefix."news_main");
 		$numrows=mysql_num_rows($dball);
@@ -92,50 +92,50 @@ if(file_exists("smpbns_settings.php")) {
 		$query=mysql_query("ALTER TABLE ".$prefix."news_main AUTO_INCREMENT = ".$ai);
 		if($query != 1) {
 		?>
-		<p class=smpbns_error>Nie udało się ustawić poprawnej wartości AUTO_INCREMENT!</p>
+		<p class=smpbns_error>Couldn' t set correct value of AUTO_INCREMENT!</p>
 		<?php
 		} else {	
 		$query=mysql_query("INSERT INTO ".$prefix."news_main VALUES (NULL,".'"'.$_POST['title'].'"'.",".'"'.$_POST['content'].'"'.",NULL)");
 		if($query == 1) {
 		?>
-		<p class="smpbns_info">Wpis został dodany!</p><br />
+		<p class="smpbns_info">Entry added successfully!</p><br />
 		<?php
 		} else {
 		?>
-		<p class="smpbns_error">Nie udało się dodać wpisu!</p><br />
+		<p class="smpbns_error">Entry couldn' t be added!</p><br />
 		<?php
 		}
 		}
 		mysql_close($baza);
 	} else {
 	?>
-	<h3 class="smpbns_title">Dodawanie nowego wpisu:</h3><br /><br />
+	<h3 class="smpbns_title">Adding a new entry:</h3><br /><br />
 	<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=add_new" method="post">
 	<input type="text" name="title" /><br />
 	<textarea name="content" rows=50 cols=50>
 	</textarea><br />
 	<input type="hidden" name="newset" value="1" />
-	<input type="submit" value="Dodaj" />
+	<input type="submit" value="Add" />
 	</form>
 	<br />
 	<?php
 	}
 	} else if($_GET['action'] == "news_edit") {
 		if($_POST['edset'] == 1) {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
+		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Can' t connect with MySQL server! Is installation completed?");
 		mysql_select_db($dbname);
 		$query=mysql_query("UPDATE ".$prefix."news_main SET title=".'"'.$_POST['title'].'"'.",content=".'"'.$_POST['content'].'"'." WHERE id=".$_POST['id']);
 		if($query == 1) {
 		?>
-		<p class="smpbns_info">Wpis zaktualizowany pomyślnie!</p><br />
+		<p class="smpbns_info">Entry updated successfully!</p><br />
 		<?php
 		} else {
 		?>
-		<p class="smpbns_error">Nie udało się zaktualizować wpisu!</p><br />
+		<p class="smpbns_error">Entry couldn' t be updated!</p><br />
 		<?php
 		}
 		} else {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
+		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Can' t connect with MySQL server! Is installation completed?");
 		mysql_select_db($dbname);
 		$id = $_POST['id'];
 		if($id != NULL) {
@@ -144,7 +144,7 @@ if(file_exists("smpbns_settings.php")) {
 		$query=mysql_query("SELECT content FROM ".$prefix."news_main WHERE id=".$id);
 		$content=mysql_fetch_array($query);
 		?>
-		<h3 class=smpbns_title>Modyfikacja wpisu:</h3><br />
+		<h3 class=smpbns_title>Modifying the entry:</h3><br />
 		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_edit" method="post">
 		<input type="text" name="title" value="<?php echo $title['title']; ?>" /><br />
 		<textarea name="content" rows=50 cols=50>
@@ -152,31 +152,31 @@ if(file_exists("smpbns_settings.php")) {
 		</textarea><br />
 		<input type="hidden" name="edset" value="1" />
 		<input type="hidden" name="id" value="<?php echo $id; ?>" />
-		<input type="submit" value="Zapisz" />	
+		<input type="submit" value="Save" />	
 		</form>
 		<?php
 		mysql_close($baza);
 		} else {
 		?>
-		<p class="smpbns_error">Nie udało się wczytać ID wiadomości! Wpis nie może zostać zmodyfikowany!</p><br />
+		<p class="smpbns_error">Couldn' t read the ID of the message! Entry can' t be modified!</p><br />
 		<?php
 		mysql_close($baza);
 		}
 		}
 	} else if($_GET['action'] == "news_delete") {
 		?>
-		<h3 class="smpbns_title">Usuwanie wpisu</h3><br />
+		<h3 class="smpbns_title">Deleting the entry:</h3><br />
 		<?php
 		$id=$_POST['id'];
 		if($id != NULL) {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
+		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Can' t connect with MySQL server! Is installation completed?");
 		mysql_select_db($dbname);
 		$dball=mysql_query("SELECT * FROM ".$prefix."news_main");
 		$rows=mysql_num_rows($dball);
 		$query=mysql_query("DELETE FROM ".$prefix."news_main WHERE id=".$id);
 		if($query == 1) {
 		?>
-		<p class=smpbns_info>Wpis został pomyślnie usunięty!</p><br />
+		<p class=smpbns_info>Entry deleted successfully!</p><br />
 		<?php
 			$nid=$id+1;
 			if($nid<=$rows) {
@@ -191,38 +191,38 @@ if(file_exists("smpbns_settings.php")) {
 			}
 		} else {
 		?>
-		<p class="smpbns_error">Nie udało się wczytać ID wiadomości! Wpis nie mógł zostać usunięty!</p><br />
+		<p class="smpbns_error">Couldn' t read the ID of the message! Entry can' t be deleted!</p><br />
 		<?php
 		}
 		}
 	} else if($_GET['action'] == "logout") {
 		$_SESSION['mod_login'] = 0;
 		?>
-		<p class="smpbns_info">Wylogowano Cię z systemu moderacji SMPBNS! Możesz teraz przejść na stronę główną systemu, lub zalogować się jeszcze raz, ponownie wchodząc na tą stronę.</p>
+		<p class="smpbns_info">You' re now logged out from the moderation system. You can now go to main page of SMPBNS or login again by refreshing this page.</p>
 		<?php
 	} else {
 	?>
-	<p class="smpbns_text">Witaj w systemie moderacji SMPBNS! Wybierz działanie z menu, znajdującego się na górze strony. Kiedy skończysz pracę, wyloguj się.</p>
+	<p class="smpbns_text">Welcome to the SMPBNS moderation system! Choose an action from the menu, which is on the top of this page. When you are finished, log out.</p>
 	<?php
 	}
 	} else {
 	?>
-	<p class="smpbns_modlogin_text">Podaj hasło moderatora:</p><br />
+	<p class="smpbns_modlogin_text">Type moderator password:</p><br />
 	<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 		<input type="password" name="modlogin_pass" /><br />
 		<input type="hidden" name="modlogin" value="1" />
-		<input type="submit" value="Zaloguj" />
+		<input type="submit" value="Login" />
 	</form>
 <?php
 	}
 } else {
 ?>
-<p class="smpbns_error">Plik ustawień nie istnieje! Czy na pewno uruchomiłeś install.php?</p>
+<p class="smpbns_error">Settings file doesn' t exist! Are you sure, that you launched install.php?</p>
 <?php
 }
 ?>
 <br />
-<a class="smpbns_main_link" href="smpbns.php" title="Indeks systemu SMPBNS">Indeks systemu SMPBNS</a><hr />
+<a class="smpbns_main_link" href="smpbns.php" title="SMPBNS Index">SMPBNS Index</a><hr />
 <p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2010 by Phitherek_</p>
 </body>
 </html>
