@@ -17,6 +17,21 @@ if(file_exists("smpbns_settings.php")) {
 		$_SESSION['smpbns_access'] = 0;
 		session_regenerate_id();
 	} else {
+		if($_POST['unlock'] == 1) {
+			if($_POST['accpass'] == $accpass) {
+			$_SESSION['smpbns_access'] = 1;
+			session_regenerate_id();
+			}
+		} else {
+			?>
+			<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+			Podaj hasło dostępu: <br />
+			<input type="password" name="accpass" />
+			<input type="hidden" name="unlock" value=1 />
+			<input type="submit" value="Odblokuj" />
+			</form>
+			<?php
+		}
 	if($_SESSION['smpbns_access'] == 1) {
 		?>
 		<a class="smpbns_locklink" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=lock">Wyloguj</a><br /><br />
@@ -61,22 +76,7 @@ if(file_exists("smpbns_settings.php")) {
 <?php
 	}
 mysql_close($baza);
-	} else {
-		if($_POST['unlock'] == 1) {
-			if($_POST['accpass'] == $accpass) {
-			$_SESSION['smpbns_access'] = 1;
-			session_regenerate_id();
-			}
-			}
-			?>
-			<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-			Podaj hasło dostępu: <br />
-			<input type="password" name="accpass" />
-			<input type="hidden" name="unlock" value=1 />
-			<input type="submit" value="Odblokuj" />
-			</form>
-			<?php
-		}
+	}
 	}
 } else {
 ?>
