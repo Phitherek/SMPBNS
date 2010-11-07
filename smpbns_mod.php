@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SMPBNS - System moderacji - tytuł może być później zmieniony</title>
+<title>Phitherek_' s SMPBNS - MOD: Locked - System moderacji - tytuł może być później zmieniony</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
