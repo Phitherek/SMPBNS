@@ -2,9 +2,6 @@ SMPBNS - Simple MySQL and PHP Based News System
 
 For installation instructions refer to INSTALLNOTES.
 
-Planned TODO:
-1. MOD: SLMmed (see SLM repo).
-
 Enjoy!
 
-Branch master: SMPBNS in Polish, base version.
+Branch mod_locked: SMPBNS in Polish, MOD: Locked.
