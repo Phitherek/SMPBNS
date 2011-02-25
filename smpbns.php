@@ -6,20 +6,42 @@
 </head>
 <body>
 <?php
+if($_POST['setprefix'] == 1) {
+$prefixfile=fopen("smpbns_prefix.php","w");
+flock($prefixfile, LOCK_EX);
+fputs($prefixfile, '<?php'."\n");
+fputs($prefixfile, '$prefix="'.$_POST['prefix'].'";'."\n");
+fputs($prefixfile, '?>');
+flock($prefixfile, LOCK_UN);
+fclose($prefixfile);
+if(file_exists("smpbns_prefix.php")) {
+echo("Prefiks został zapisany pomyślnie!<br />");	
+} else {
+echo("Nie udało się zapisać pliku z prefiksem! Sprawdź uprawnienia katalogu i spróbuj ponownie!<br />");	
+}
+}
+if(file_exists("smpbns_prefix.php")) {
+include("smpbns_prefix.php");
+$prefixexists = true;
+} else {
+$prefixexists = false;	
+}
+if($prefixexists == true) {
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 session_regenerate_id();
-$_SESSION['started'] = true;
+$_SESSION[$prefix.'started'] = true;
 }
 if(file_exists("smpbns_settings.php")) {
 	include("smpbns_settings.php");
 	if($_GET['action'] == "lock") {
-		$_SESSION['smpbns_access'] = 0;
+		$_SESSION[$prefix.'smpbns_access'] = 0;
+		echo("<p class=".'"smpbns_info"'.">Dostęp został ponownie zablokowany!</p><br />");
 		session_regenerate_id();
-	} else {
+	}
 		if($_POST['unlock'] == 1) {
 			if($_POST['accpass'] == $accpass) {
-			$_SESSION['smpbns_access'] = 1;
+			$_SESSION[$prefix.'smpbns_access'] = 1;
 			session_regenerate_id();
 			}
 		} else {
@@ -32,7 +54,7 @@ if(file_exists("smpbns_settings.php")) {
 			</form>
 			<?php
 		}
-	if($_SESSION['smpbns_access'] == 1) {
+	if($_SESSION[$prefix.'smpbns_access'] == 1) {
 		?>
 		<a class="smpbns_locklink" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=lock">Wyloguj</a><br /><br />
 		<?php
@@ -77,16 +99,25 @@ if(file_exists("smpbns_settings.php")) {
 	}
 mysql_close($baza);
 	}
-	}
 } else {
 ?>
 <p class="smpbns_error">Plik ustawień nie istnieje! Czy na pewno uruchomiłeś install.php?</p>
 <?php
 }
+} else {
+echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej instalacji SMPBNS. NIGDY nie instaluj dwóch systemów z tym samym prefiksem! Jeżeli jest to twoja pierwsza i jedyna instalacja SMPBNS, zaleca się pozostawienie domyślnego prefiksu.<br />");
+?>
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="text" name="prefix" value="smpbns_" /><br />
+<input type="hidden" name="setprefix" value="1" />
+<input type="submit" value="Ustaw prefiks i kontynuuj" />
+</form>
+<?php
+}
 ?>
 <a class="smpbns_admin" href="smpbns_mod.php" title="Moderacja">Moderacja</a><br />
 <hr />
-<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2010 by Phitherek_<br />
-MOD: Locked | &copy; 2010 by Phitherek_</p>
+<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />
+MOD: Locked | &copy; 2010-2011 by Phitherek_</p>
 </body>
 </html>
