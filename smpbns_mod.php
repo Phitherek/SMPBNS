@@ -6,20 +6,41 @@
 </head>
 <body>
 <?php
+if($_POST['setprefix'] == 1) {
+$prefixfile=fopen("smpbns_prefix.php","w");
+flock($prefixfile, LOCK_EX);
+fputs($prefixfile, '<?php'."\n");
+fputs($prefixfile, '$prefix="'.$_POST['prefix'].'";'."\n");
+fputs($prefixfile, '?>');
+flock($prefixfile, LOCK_UN);
+fclose($prefixfile);
+if(file_exists("smpbns_prefix.php")) {
+echo("Prefiks został zapisany pomyślnie!<br />");	
+} else {
+echo("Nie udało się zapisać pliku z prefiksem! Sprawdź uprawnienia katalogu i spróbuj ponownie!<br />");	
+}
+}
+if(file_exists("smpbns_prefix.php")) {
+include("smpbns_prefix.php");
+$prefixexists = true;
+} else {
+$prefixexists = false;	
+}
+if($prefixexists == true) {
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 session_regenerate_id();
-$_SESSION['started'] = true;
+$_SESSION[$prefix.'started'] = true;
 }
 if(file_exists("smpbns_settings.php")) {
 	include("smpbns_settings.php");
 	if($_POST['modlogin'] == 1) {
 	if($_POST['modlogin_pass'] == $modpass) {
-	$_SESSION['mod_login'] = 1;
+	$_SESSION[$prefix.'mod_login'] = 1;
 	session_regenerate_id();
 	}
 	}
-	if($_SESSION['mod_login'] == 1) {
+	if($_SESSION[$prefix.'mod_login'] == 1) {
 	if(file_exists("install.php")) {
 	?>
 	<p class="smpbns_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś install.php!</p><br /><br />
@@ -196,7 +217,7 @@ if(file_exists("smpbns_settings.php")) {
 		}
 		}
 	} else if($_GET['action'] == "logout") {
-		$_SESSION['mod_login'] = 0;
+		$_SESSION[$prefix.'mod_login'] = 0;
 		?>
 		<p class="smpbns_info">Wylogowano Cię z systemu moderacji SMPBNS! Możesz teraz przejść na stronę główną systemu, lub zalogować się jeszcze raz, ponownie wchodząc na tą stronę.</p>
 		<?php
@@ -218,6 +239,16 @@ if(file_exists("smpbns_settings.php")) {
 } else {
 ?>
 <p class="smpbns_error">Plik ustawień nie istnieje! Czy na pewno uruchomiłeś install.php?</p>
+<?php
+}
+} else {
+echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej instalacji SMPBNS. NIGDY nie instaluj dwóch systemów z tym samym prefiksem! Jeżeli jest to twoja pierwsza i jedyna instalacja SMPBNS, zaleca się pozostawienie domyślnego prefiksu.<br />");
+?>
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="text" name="prefix" value="smpbns_" /><br />
+<input type="hidden" name="setprefix" value="1" />
+<input type="submit" value="Ustaw prefiks i kontynuuj" />
+</form>
 <?php
 }
 ?>
