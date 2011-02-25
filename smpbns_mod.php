@@ -254,6 +254,6 @@ echo("For security reasons you must set a prefix for this installation of SMPBNS
 ?>
 <br />
 <a class="smpbns_main_link" href="smpbns.php" title="SMPBNS Index">SMPBNS Index</a><hr />
-<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2010 by Phitherek_</p>
+<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_</p>
 </body>
 </html>
