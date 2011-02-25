@@ -5,16 +5,37 @@
 </head>
 <body>
 <?php
+if($_POST['setprefix'] == 1) {
+$prefixfile=fopen("smpbns_prefix.php","w");
+flock($prefixfile, LOCK_EX);
+fputs($prefixfile, '<?php'."\n");
+fputs($prefixfile, '$prefix="'.$_POST['prefix'].'";'."\n");
+fputs($prefixfile, '?>');
+flock($prefixfile, LOCK_UN);
+fclose($prefixfile);
+if(file_exists("smpbns_prefix.php")) {
+echo("A prefix was saved successfully!<br />");	
+} else {
+echo("Could not save the file with prefix! Check directory privileges and try again!<br />");	
+}
+}
+if(file_exists("smpbns_prefix.php")) {
+include("smpbns_prefix.php");
+$prefixexists = true;
+} else {
+$prefixexists = false;	
+}
+if($prefixexists == true) {
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 session_regenerate_id();
-$_SESSION['started'] = true;
+$_SESSION[$prefix.'started'] = true;
 }
 if($_POST['beginpass']=="BtW24oPx") { 
-	$_SESSION['login'] = 1;
+	$_SESSION[$prefix.'login'] = 1;
 	session_regenerate_id();
 }
-if($_SESSION['login'] == 1) {
+if($_SESSION[$prefix.'login'] == 1) {
 $step = $_POST['go'];
 if($step == 4) {
 if($_POST['modpass']!=NULL) {	
@@ -151,6 +172,16 @@ echo("Enter password given in information file attached to the system to continu
 <input type="password" name="beginpass" /><br />
 <input type="hidden" name="go" value="1" />
 <input type="submit" value="Continue" />
+</form>
+<?php
+}
+} else {
+echo("For security reasons you must set a prefix for this installation of SMPBNS. NEVER install two systems with the same prefix! If it is your first and only installation of SMPBNS, it is recommended to leave the default prefix. The prefix will be saved even if the installation will be uncomplete.<br />");
+?>
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="text" name="prefix" value="smpbns_" /><br />
+<input type="hidden" name="setprefix" value="1" />
+<input type="submit" value="Set prefix and continue" />
 </form>
 <?php
 }
