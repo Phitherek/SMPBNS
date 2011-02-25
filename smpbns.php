@@ -56,6 +56,6 @@ mysql_close($baza);
 ?>
 <a class="smpbns_admin" href="smpbns_mod.php" title="Moderacja">Moderacja</a><br />
 <hr />
-<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2010 by Phitherek_</p>
+<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_</p>
 </body>
 </html>
