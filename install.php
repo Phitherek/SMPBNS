@@ -176,7 +176,7 @@ echo("Enter password given in information file attached to the system to continu
 <?php
 }
 } else {
-echo("For security reasons you must set a prefix for this installation of SMPBNS. NEVER install two systems with the same prefix! If it is your first and only installation of SMPBNS, it is recommended to leave the default prefix. The prefix will be saved even if the installation will be uncomplete.<br />");
+echo("For security reasons you must set a prefix for this installation of SMPBNS. NEVER install two systems with the same prefix! If it is your first and only installation of SMPBNS, it is recommended to leave the default prefix. The prefix will be saved even if the installation will be incomplete.<br />");
 ?>
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="text" name="prefix" value="smpbns_" /><br />
