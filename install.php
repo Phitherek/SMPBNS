@@ -72,7 +72,7 @@ MySQL password: <input type="password" name="dbpass" /><br />
 Name of new database: <input type="text" name="dbname" value="smpbns" /><br />
 <input type="hidden" name="go" value="3" />
 <input type="hidden" name="newdb" value="1" />
-<input type="submit" name="Do it" />
+<input type="submit" value="Do it" />
 </form>
 <?php
 } else if($step == 3) {
