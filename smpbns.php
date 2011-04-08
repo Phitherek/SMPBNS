@@ -60,11 +60,11 @@ if(file_exists("smpbns_settings.php")) {
 		<?php
 	$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 	mysql_select_db($dbname);
-	$dball=mysql_query("SELECT * FROM ".$prefix."news_main");
+	$dball=mysql_query("SELECT * FROM ".$dbprefix."news_main");
 	$rows=mysql_num_rows($dball);
 	if($rows != NULL) {
 		for($id = 1; $id <= $rows; $id++) {
-			$query=mysql_query("SELECT title FROM ".$prefix."news_main WHERE id=".$id);
+			$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
 			$title=mysql_fetch_array($query);
 		if($title != NULL) {
 		?>
@@ -75,7 +75,7 @@ if(file_exists("smpbns_settings.php")) {
 		<h3 class="smpbns_title">Brak tytułu</h3><hr />
 		<?php
 		}
-		$query=mysql_query("SELECT content FROM ".$prefix."news_main WHERE id=".$id);
+		$query=mysql_query("SELECT content FROM ".$dbprefix."news_main WHERE id=".$id);
 		$content=mysql_fetch_array($query);
 		if($content != NULL) {
 		?>
@@ -86,7 +86,7 @@ if(file_exists("smpbns_settings.php")) {
 		<p class="smpbns_news">Brak treści</p><hr />
 		<?php
 		}
-		$query=mysql_query("SELECT added FROM ".$prefix."news_main WHERE id=".$id);
+		$query=mysql_query("SELECT added FROM ".$dbprefix."news_main WHERE id=".$id);
 		$added=mysql_fetch_array($query);
 		?>
 		<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?></p><br /><br />

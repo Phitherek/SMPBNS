@@ -56,11 +56,11 @@ if(file_exists("smpbns_settings.php")) {
 	if($_GET['action'] == "news_list") {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$prefix."news_main");
+		$dball=mysql_query("SELECT * FROM ".$dbprefix."news_main");
 		$rows=mysql_num_rows($dball);
 		if($rows != NULL) {
 			for($id = 1; $id <= $rows; $id++) {
-				$query=mysql_query("SELECT title FROM ".$prefix."news_main WHERE id=".$id);
+				$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
 				$title=mysql_fetch_array($query);
 			if($title != NULL) {
 			?>
@@ -71,7 +71,7 @@ if(file_exists("smpbns_settings.php")) {
 			<h3 class="smpbns_title">Brak tytułu</h3><hr />
 			<?php
 			}
-				$query=mysql_query("SELECT content FROM ".$prefix."news_main WHERE id=".$id);
+				$query=mysql_query("SELECT content FROM ".$dbprefix."news_main WHERE id=".$id);
 				$content=mysql_fetch_array($query);
 				if($content != NULL) {
 				?>
@@ -82,7 +82,7 @@ if(file_exists("smpbns_settings.php")) {
 				<p class="smpbns_news">Brak treści</p><hr />
 				<?php
 				}
-				$query=mysql_query("SELECT added FROM ".$prefix."news_main WHERE id=".$id);
+				$query=mysql_query("SELECT added FROM ".$dbprefix."news_main WHERE id=".$id);
 				$added=mysql_fetch_array($query);
 				?>
 				<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?></p><br />
@@ -107,16 +107,16 @@ if(file_exists("smpbns_settings.php")) {
 	if($_POST['newset'] == 1) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$prefix."news_main");
+		$dball=mysql_query("SELECT * FROM ".$dbprefix."news_main");
 		$numrows=mysql_num_rows($dball);
 		$ai=$numrows+1;
-		$query=mysql_query("ALTER TABLE ".$prefix."news_main AUTO_INCREMENT = ".$ai);
+		$query=mysql_query("ALTER TABLE ".$dbprefix."news_main AUTO_INCREMENT = ".$ai);
 		if($query != 1) {
 		?>
 		<p class=smpbns_error>Nie udało się ustawić poprawnej wartości AUTO_INCREMENT!</p>
 		<?php
 		} else {	
-		$query=mysql_query("INSERT INTO ".$prefix."news_main VALUES (NULL,".'"'.$_POST['title'].'"'.",".'"'.$_POST['content'].'"'.",NULL)");
+		$query=mysql_query("INSERT INTO ".$dbprefix."news_main VALUES (NULL,".'"'.$_POST['title'].'"'.",".'"'.$_POST['content'].'"'.",NULL)");
 		if($query == 1) {
 		?>
 		<p class="smpbns_info">Wpis został dodany!</p><br />
@@ -145,7 +145,7 @@ if(file_exists("smpbns_settings.php")) {
 		if($_POST['edset'] == 1) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$query=mysql_query("UPDATE ".$prefix."news_main SET title=".'"'.$_POST['title'].'"'.",content=".'"'.$_POST['content'].'"'." WHERE id=".$_POST['id']);
+		$query=mysql_query("UPDATE ".$dbprefix."news_main SET title=".'"'.$_POST['title'].'"'.",content=".'"'.$_POST['content'].'"'." WHERE id=".$_POST['id']);
 		if($query == 1) {
 		?>
 		<p class="smpbns_info">Wpis zaktualizowany pomyślnie!</p><br />
@@ -160,9 +160,9 @@ if(file_exists("smpbns_settings.php")) {
 		mysql_select_db($dbname);
 		$id = $_POST['id'];
 		if($id != NULL) {
-		$query=mysql_query("SELECT title FROM ".$prefix."news_main WHERE id=".$id);
+		$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
 		$title=mysql_fetch_array($query);
-		$query=mysql_query("SELECT content FROM ".$prefix."news_main WHERE id=".$id);
+		$query=mysql_query("SELECT content FROM ".$dbprefix."news_main WHERE id=".$id);
 		$content=mysql_fetch_array($query);
 		?>
 		<h3 class=smpbns_title>Modyfikacja wpisu:</h3><br />
@@ -192,9 +192,9 @@ if(file_exists("smpbns_settings.php")) {
 		if($id != NULL) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$prefix."news_main");
+		$dball=mysql_query("SELECT * FROM ".$dbprefix."news_main");
 		$rows=mysql_num_rows($dball);
-		$query=mysql_query("DELETE FROM ".$prefix."news_main WHERE id=".$id);
+		$query=mysql_query("DELETE FROM ".$dbprefix."news_main WHERE id=".$id);
 		if($query == 1) {
 		?>
 		<p class=smpbns_info>Wpis został pomyślnie usunięty!</p><br />
@@ -202,11 +202,11 @@ if(file_exists("smpbns_settings.php")) {
 			$nid=$id+1;
 			if($nid<=$rows) {
 			for($i=$nid;$i<=$rows;$i++) {
-			$query=mysql_query("SELECT added FROM ".$prefix."news_main WHERE id=".$i);
+			$query=mysql_query("SELECT added FROM ".$dbprefix."news_main WHERE id=".$i);
 			$added=mysql_fetch_array($query);
 			$sid=$i-1;
-			$query=mysql_query("UPDATE ".$prefix."news_main SET id=".$sid." WHERE id=".$i);
-			$query=mysql_query("UPDATE ".$prefix."news_main SET added=".$added['added']." WHERE id=".$sid);
+			$query=mysql_query("UPDATE ".$dbprefix."news_main SET id=".$sid." WHERE id=".$i);
+			$query=mysql_query("UPDATE ".$dbprefix."news_main SET added=".$added['added']." WHERE id=".$sid);
 			}
 			mysql_close($baza);
 			}
