@@ -185,16 +185,6 @@ echo("For security reasons you must set a prefix for this installation of SMPBNS
 </form>
 <?php
 }
-} else {
-echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej instalacji SMPBNS. NIGDY nie instaluj dwóch systemów z tym samym prefiksem! Jeżeli jest to twoja pierwsza i jedyna instalacja SMPBNS, zaleca się pozostawienie domyślnego prefiksu. Prefiks zostanie zapisany nawet, jeżeli instalacja nie zostanie ukończona.<br />");
-?>
-<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-<input type="text" name="prefix" value="smpbns_" /><br />
-<input type="hidden" name="setprefix" value="1" />
-<input type="submit" value="Ustaw prefiks i kontynuuj" />
-</form>
-<?php
-}
 ?>
 </body>
 </html>
