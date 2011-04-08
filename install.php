@@ -101,7 +101,7 @@ MySQL server adress: <input type="text" name="serek" value="<?php echo $_POST['s
 MySQL username: <input type="text" name="dbuser" value="<?php echo $_POST['dbuser']; ?>" /><br />
 MySQL password: <input type="password" name="dbpass" /><br />
 Name of database: <input type="text" name="dbname" value="<?php echo $_POST['dbname']; ?>" /><br />
-Table prefix: <input type="text" name="prefix" value="smpbns_" /><br />
+Table prefix: <input type="text" name="dbprefix" value="smpbns_" /><br />
 Moderator password: <input type="password" name="modpass" /><br />
 Repeat moderator password: <input type="password" name="modcheck" /><br />
 <input type="hidden" name="go" value="4" />
@@ -116,7 +116,7 @@ MySQL server adress: <input type="text" name="serek" value="localhost" /><br />
 MySQL username: <input type="text" name="dbuser" value="root" /><br />
 MySQL password: <input type="password" name="dbpass" /><br />
 Name of database: <input type="text" name="dbname" value="smpbns" /><br />
-Table prefix: <input type="text" name="prefix" value="smpbns_" /><br />
+Table prefix: <input type="text" name="dbprefix" value="smpbns_" /><br />
 Moderator password: <input type="password" name="modpass" /><br />
 Repeat moderator password: <input type="password" name="modcheck" /><br />
 <input type="hidden" name="go" value="4" />
@@ -131,7 +131,7 @@ $baza=mysql_connect($_POST['serek'],$_POST['dbuser'],$_POST['dbpass'])
 or die("Failed to connect with MySQL server!");
 echo("Connected with MySQL server!<br />");
 mysql_select_db($_POST['dbname']);
-$zapytanie=mysql_query("CREATE TABLE ".$_POST['prefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, PRIMARY KEY(id))");
+$zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, PRIMARY KEY(id))");
 if($zapytanie == 1) {
 echo("Table created successfully!<br />");
 } else {
@@ -152,7 +152,7 @@ fputs($ustawienia,'$serek="'.$_POST['serek'].'"'.";\n");
 fputs($ustawienia,'$dbuser="'.$_POST['dbuser'].'"'.";\n");
 fputs($ustawienia,'$dbpass="'.$_POST['dbpass'].'"'.";\n");
 fputs($ustawienia,'$dbname="'.$_POST['dbname'].'"'.";\n");
-fputs($ustawienia,'$prefix="'.$_POST['prefix'].'"'.";\n");
+fputs($ustawienia,'$dbprefix="'.$_POST['dbprefix'].'"'.";\n");
 fputs($ustawienia,'$modpass="'.$_POST['modpass'].'"'.";\n");
 fputs($ustawienia,'?>');
 flock($ustawienia,LOCK_UN);
@@ -182,6 +182,16 @@ echo("For security reasons you must set a prefix for this installation of SMPBNS
 <input type="text" name="prefix" value="smpbns_" /><br />
 <input type="hidden" name="setprefix" value="1" />
 <input type="submit" value="Set prefix and continue" />
+</form>
+<?php
+}
+} else {
+echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej instalacji SMPBNS. NIGDY nie instaluj dwóch systemów z tym samym prefiksem! Jeżeli jest to twoja pierwsza i jedyna instalacja SMPBNS, zaleca się pozostawienie domyślnego prefiksu. Prefiks zostanie zapisany nawet, jeżeli instalacja nie zostanie ukończona.<br />");
+?>
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="text" name="prefix" value="smpbns_" /><br />
+<input type="hidden" name="setprefix" value="1" />
+<input type="submit" value="Ustaw prefiks i kontynuuj" />
 </form>
 <?php
 }
