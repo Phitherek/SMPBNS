@@ -160,9 +160,9 @@ if(file_exists("smpbns_settings.php")) {
 		mysql_select_db($dbname);
 		$id = $_POST['id'];
 		if($id != NULL) {
-		$query=mysql_query("SELECT title FROM ".$prefix."news_main WHERE id=".$id);
+		$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
 		$title=mysql_fetch_array($query);
-		$query=mysql_query("SELECT content FROM ".$prefix."news_main WHERE id=".$id);
+		$query=mysql_query("SELECT content FROM ".$dbprefix."news_main WHERE id=".$id);
 		$content=mysql_fetch_array($query);
 		?>
 		<h3 class=smpbns_title>Modyfikacja wpisu:</h3><br />
