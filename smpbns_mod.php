@@ -17,7 +17,7 @@ if(file_exists("ee_mode.php")) {
 	} else {
 		echo('<p class="ee_error">(ExtensionEngine)(Błąd) Nie znaleziono lokalnego pliku z listą, a tryb ustawiono na &quot;local&quot;! Skontaktuj się z administratorem!</p><br />');	
 		}
-	} else if($eemode = "locandrem") {
+	} else if($eemode == "locandrem") {
 		$official_eelist = extensionengine_get_remote_list("http://www.smpbns.phitherek.cba.pl/download/ee/ee_list");
 		if($official_eelist == 2) {
 		echo('<p class="ee_error">(ExtensionEngine)(Błąd) Twój serwer nie obsługuje pobierania plików przez wbudowane funkcje PHP ani przez CURL! ExtensionEngine nie potrafi pobrać listy z serwera!</p><br />');	
@@ -33,7 +33,7 @@ if(file_exists("ee_mode.php")) {
 		if(file_exists("ee_list")) {
 			$local_eelist = file_get_contents("ee_list");
 		}
-		} else if($eemode = "locorrem") {
+		} else if($eemode == "locorrem") {
 		if(!file_exists("ee_list")) {
 		$official_eelist = extensionengine_get_remote_list("http://www.smpbns.phitherek.cba.pl/download/ee/ee_list");	
 		if($official_eelist == 2) {
@@ -50,7 +50,7 @@ if(file_exists("ee_mode.php")) {
 		} else {
 			$local_eelist = file_get_contents("ee_list");
 		}
-	} else if($eemode = "remote") {
+	} else if($eemode == "remote") {
 		$official_eelist = extensionengine_get_remote_list("http://www.smpbns.phitherek.cba.pl/download/ee/ee_list");
 		if($official_eelist == 2) {
 		echo('<p class="ee_error">(ExtensionEngine)(Błąd) Twój serwer nie obsługuje pobierania plików przez wbudowane funkcje PHP ani przez CURL! ExtensionEngine nie potrafi pobrać listy z serwera!</p><br />');	
@@ -283,7 +283,7 @@ if(file_exists("smpbns_settings.php")) {
 		if(isset($local_eelist)) {
 		extensionengine_parse_adminlinks($local_eelist, $id);
 		}
-	} else if($eemode = "locandrem") {
+	} else if($eemode == "locandrem") {
 		if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
 		extensionengine_parse_adminlinks($official_eelist, $id);	
@@ -297,7 +297,7 @@ if(file_exists("smpbns_settings.php")) {
 		if(isset($local_eelist)) {
 		extensionengine_parse_adminlinks($local_eelist, $id);
 		}
-	} else if($eemode = "locorrem") {
+	} else if($eemode == "locorrem") {
 		if(!isset($local_eelist)) {
 			if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
@@ -312,7 +312,7 @@ if(file_exists("smpbns_settings.php")) {
 		} else {
 		extensionengine_parse_adminlinks($local_eelist, $id);
 		}
-	} else if($eemode = "remote") {
+	} else if($eemode == "remote") {
 		if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
 		extensionengine_parse_adminlinks($official_eelist, $id);	
@@ -571,41 +571,41 @@ echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej insta
 	} else if($eemode = "locandrem") {
 		if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_postlinks($official_eelist, 'o');	
+		extensionengine_parse_info($official_eelist, 'o');	
 		}	
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_postlinks($custom_eelist, 'u');	
+		extensionengine_parse_info($custom_eelist, 'u');	
 		}
 		}
 		if(isset($local_eelist)) {
-		extensionengine_parse_postlinks($local_eelist, 'l');
+		extensionengine_parse_info($local_eelist, 'l');
 		}
 	} else if($eemode = "locorrem") {
 		if(!isset($local_eelist)) {
 			if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_postlinks($official_eelist, 'o');	
+		extensionengine_parse_info($official_eelist, 'o');	
 		}
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_postlinks($custom_eelist, 'u');	
+		extensionengine_parse_info($custom_eelist, 'u');	
 		}
 		}
 		} else {
-		extensionengine_parse_postlinks($local_eelist, 'l');
+		extensionengine_parse_info($local_eelist, 'l');
 		}
 	} else if($eemode = "remote") {
 		if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_postlinks($official_eelist, 'o');	
+		extensionengine_parse_info($official_eelist, 'o');	
 		}	
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_postlinks($custom_eelist, 'u');	
+		extensionengine_parse_info($custom_eelist, 'u');	
 		}
 		}
 	}
