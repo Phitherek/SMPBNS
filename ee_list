@@ -1,0 +1,12 @@
+[smpbns_singleview.php]
+[name]
+SingleView
+[author]
+Phitherek_
+[date]
+2011
+[menulink]
+smpbns_singleview.php?action=list
+[postlink]
+smpbns_singleview.php?action=show&
+[end]
