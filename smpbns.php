@@ -93,11 +93,11 @@ $feelist = fopen('data:text/plain,'.$eelist, 'rb');
 			$action = "name";	
 			} else if($parsed == "menulink") {
 			$action = "menulink";	
-			}
 			} else if($parsed == "end") {
 			$action = "detect";	
 			}
 			$parsed = "";
+			}
 		} else if($action == "skip") {
 			if($line[0] == '[') {
 			for($i = 1; $i < strlen($line)-2; $i++) {
@@ -118,6 +118,7 @@ $feelist = fopen('data:text/plain,'.$eelist, 'rb');
 			} else {
 				echo("(ExtensionEngine) ".$name."</a><br />");	
 			}
+			$name = "";
 			$action = "parse";
 			}
 		}
@@ -171,11 +172,11 @@ function extensionengine_parse_postlinks($eelist, $postid) {
 			$action = "name";	
 			} else if($parsed == "postlink") {
 			$action = "postlink";	
-			}
 			} else if($parsed == "end") {
 			$action = "detect";
 			}
 			$parsed = "";
+			}
 		} else if($action == "skip") {
 			if($line[0] == '[') {
 			for($i = 1; $i < strlen($line)-2; $i++) {
@@ -190,12 +191,13 @@ function extensionengine_parse_postlinks($eelist, $postid) {
 				$name = $line;
 				$action = "parse";
 			} else if($action == "postlink") {
-			echo('<a class="ee_menulink" href="'.trim($line)."postid=".$postid.'">');
+			echo('|<a class="ee_menulink" href="'.trim($line)."postid=".$postid.'">');
 			if($name == "") {
-				echo("(ExtensionEngine)(Post) Nienazwane rozszerzenie</a> ");
+				echo("(ExtensionEngine)(Post) Nienazwane rozszerzenie</a>");
 			} else {
-				echo("(ExtensionEngine)(Post) ".$name."</a> ");	
+				echo("(ExtensionEngine)(Post) ".$name."</a>");	
 			}
+			$name = "";
 			$action = "parse";
 			}
 		}
@@ -235,21 +237,21 @@ function extensionengine_parse_info($eelist, $type) {
 			} else if($parsed == "end") {
 				if($type == 'o') {
 				if($name == "") {
-					echo('<p class="ee_info">'."Extension: <unnamed>");
+					echo("Extension: /unnamed/");
 				} else {
-					echo('<p class="ee_info">'."Extension: ".$name);
+					echo("Extension: ".$name);
 				}
 				} else if($type == 'u') {
 					if($name == "") {
-						echo('<p class="ee_info">'."(unofficial) Extension: <unnamed>");
+						echo("(unofficial) Extension: /unnamed/");
 					} else {
-						echo('<p class="ee_info">'."(unofficial) Extension: ".$name);	
+						echo("(unofficial) Extension: ".$name);	
 					}
 				} else if($type == 'l') {
 					if($name == "") {
-						echo('<p class="ee_info">'."(local) Extension: <unnamed>");	
+						echo("(local) Extension: /unnamed/");	
 					} else {
-						echo('<p class="ee_info">'."(local) Extension: ".$name);	
+						echo("(local) Extension: ".$name);	
 					}
 				}
 			if($author != "") {
@@ -259,7 +261,10 @@ function extensionengine_parse_info($eelist, $type) {
 					echo(" | &copy; ".$date." by ".$author);
 				}
 			}
-			echo("</p><br />");
+			echo("<br />");
+			$name = "";
+			$author = "";
+			$date = "";
 			$action = "detect";
 			}
 			}
@@ -429,7 +434,7 @@ mysql_close($baza);
 ?>
 <a class="smpbns_admin" href="smpbns_mod.php" title="Moderacja">Moderacja</a><br />
 <hr />
-<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />MOD: ExtensionEngine | &copy; 2011 by Phitherek_</p><br />
+<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />MOD: ExtensionEngine | &copy; 2011 by Phitherek_<br />
 <?php
 	if($eemode == "local") {
 		if(isset($local_eelist)) {
@@ -477,5 +482,6 @@ mysql_close($baza);
 		}
 	}
 	?>
+	</p>
 </body>
 </html>

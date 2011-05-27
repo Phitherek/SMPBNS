@@ -115,11 +115,11 @@ function extensionengine_parse_adminlinks($eelist) {
 			$action = "name";	
 			} else if($parsed == "adminlink") {
 			$action = "adminlink";	
-			}
 			} else if($parsed == "end") {
 			$action = "detect";	
 			}
 			$parsed = "";
+			}
 		} else if($action == "skip") {
 			if($line[0] == '[') {
 			for($i = 1; $i < strlen($line)-2; $i++) {
@@ -139,6 +139,7 @@ function extensionengine_parse_adminlinks($eelist) {
 			} else {
 				echo("(ExtensionEngine) Ustawienia rozszerzenia: ".$name."</a><br />");	
 			}
+			$name = "";
 			$action = "parse";
 			}
 		}
@@ -177,21 +178,21 @@ function extensionengine_parse_info($eelist, $type) {
 			} else if($parsed == "end") {
 				if($type == 'o') {
 				if($name == "") {
-					echo('<p class="ee_info">'."Extension: <unnamed>");
+					echo("Extension: /unnamed/");
 				} else {
-					echo('<p class="ee_info">'."Extension: ".$name);
+					echo("Extension: ".$name);
 				}
 				} else if($type == 'u') {
 					if($name == "") {
-						echo('<p class="ee_info">'."(unofficial) Extension: <unnamed>");
+						echo("(unofficial) Extension: /unnamed/");
 					} else {
-						echo('<p class="ee_info">'."(unofficial) Extension: ".$name);	
+						echo("(unofficial) Extension: ".$name);	
 					}
 				} else if($type == 'l') {
 					if($name == "") {
-						echo('<p class="ee_info">'."(local) Extension: <unnamed>");	
+						echo("(local) Extension: /unnamed/");	
 					} else {
-						echo('<p class="ee_info">'."(local) Extension: ".$name);	
+						echo("(local) Extension: ".$name);	
 					}
 				}
 			if($author != "") {
@@ -201,7 +202,10 @@ function extensionengine_parse_info($eelist, $type) {
 					echo(" | &copy; ".$date." by ".$author);
 				}
 			}
-			echo("</p><br />");
+			echo("<br />");
+			$name = "";
+			$author = "";
+			$date = "";
 			$action = "detect";
 			}
 			}
@@ -558,7 +562,7 @@ echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej insta
 ?>
 <br />
 <a class="smpbns_main_link" href="smpbns.php" title="Indeks systemu SMPBNS">Indeks systemu SMPBNS</a><hr />
-<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />MOD: ExtensionEngine | &copy; 2011 by Phitherek_</p><br />
+<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />MOD: ExtensionEngine | &copy; 2011 by Phitherek_<br />
 <?php
 	if($eemode == "local") {
 		if(isset($local_eelist)) {
@@ -606,5 +610,6 @@ echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej insta
 		}
 	}
 	?>
+	</p>
 </body>
 </html>
