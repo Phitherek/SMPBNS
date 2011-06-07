@@ -2,7 +2,7 @@
 <head>
 <title>Phitherek_' s SMPBNS - MOD: ExtensionEngine - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+<link rel="stylesheet" name="Green On Black style for SMPBNS" href="styles/greenblack.css" type="text/css" />
 </head>
 <body>
 <?php
@@ -191,7 +191,7 @@ function extensionengine_parse_postlinks($eelist, $postid) {
 				$name = $line;
 				$action = "parse";
 			} else if($action == "postlink") {
-			echo('|<a class="ee_menulink" href="'.trim($line)."postid=".$postid.'">');
+			echo('|<a class="ee_postlink" href="'.trim($line)."postid=".$postid.'">');
 			if($name == "") {
 				echo("(ExtensionEngine)(Post) Nienazwane rozszerzenie</a>");
 			} else {
