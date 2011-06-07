@@ -63,21 +63,3 @@ color:#f00;
 font-size:14pt;
 font-weight:bold;
 }
-
-p.ee_error {
-color:#f00;
-font-size:14pt;
-font-weight:bold;
-}
-
-a.ee_menulink {
-font-size:12pt;
-}
-
-a.ee_adminlink {
-font-size:12pt;
-}
-
-a.ee_postlink {
-font-size:10pt;
-}
