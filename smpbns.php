@@ -2,7 +2,7 @@
 <head>
 <title>Phitherek_' s SMPBNS - MOD: ExtensionEngine - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" name="Green On Black style for SMPBNS" href="styles/greenblack.css" type="text/css" />
+<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
 <body>
 <?php
