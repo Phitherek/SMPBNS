@@ -115,6 +115,7 @@ Hasło moderatora: <input type="password" name="modpass" /><br />
 Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 Hasło dostępu: <input type="password" name="accpass" /><br />
 Powtórz hasło dostępu: <input type="password" name="acccheck" /><br />
+<input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -132,6 +133,7 @@ Hasło moderatora: <input type="password" name="modpass" /><br />
 Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 Hasło dostępu: <input type="password" name="accpass" /><br />
 Powtórz hasło dostępu: <input type="password" name="acccheck" /><br />
+<input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -144,7 +146,7 @@ $baza=mysql_connect($_POST['serek'],$_POST['dbuser'],$_POST['dbpass'])
 or die("Połączenie z serwerem MySQL nieudane!");
 echo("Połączono z serwerem MySQL!<br />");
 mysql_select_db($_POST['dbname']);
-$zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, PRIMARY KEY(id))");
+$zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, parse BOOLEAN NOT NULL, PRIMARY KEY(id))");
 if($zapytanie == 1) {
 echo("Tabela została utworzona poprawnie!<br />");
 } else {
@@ -168,6 +170,11 @@ fputs($ustawienia,'$dbname="'.$_POST['dbname'].'"'.";\n");
 fputs($ustawienia,'$dbprefix="'.$_POST['dbprefix'].'"'.";\n");
 fputs($ustawienia,'$modpass="'.$_POST['modpass'].'"'.";\n");
 fputs($ustawienia,'$accpass="'.$_POST['accpass'].'"'.";\n");
+if($_POST['parsedefault'] == 1) {
+fputs($ustawienia,'$parsedefault='.$_POST['parsedefault'].";\n");
+} else {
+fputs($ustawienia,'$parsedefault=1'.";\n");	
+}
 fputs($ustawienia,'?>');
 flock($ustawienia,LOCK_UN);
 fclose($ustawienia);
