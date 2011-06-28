@@ -502,6 +502,8 @@ if($_GET["action"] == "list" OR $action == "list") {
 	$rows=mysql_num_rows($dball);
 	if($rows != NULL) {
 		for($id = 1; $id <= $rows; $id++) {
+			$query=mysql_query("SELECT parse FROM ".$dbprefix."news_main WHERE id=".$id);
+			$parse=mysql_fetch_array($query);
 			$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
 			$title=mysql_fetch_array($query);
 		if($title != NULL) {
