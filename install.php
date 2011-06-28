@@ -104,6 +104,7 @@ Name of database: <input type="text" name="dbname" value="<?php echo $_POST['dbn
 Table prefix: <input type="text" name="dbprefix" value="smpbns_" /><br />
 Moderator password: <input type="password" name="modpass" /><br />
 Repeat moderator password: <input type="password" name="modcheck" /><br />
+<input type="checkbox" name="parsedefault" value="1" checked /> Enable SMPBNS Code Parser by default<br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Do it and save" />
 </form>
@@ -119,6 +120,7 @@ Name of database: <input type="text" name="dbname" value="smpbns" /><br />
 Table prefix: <input type="text" name="dbprefix" value="smpbns_" /><br />
 Moderator password: <input type="password" name="modpass" /><br />
 Repeat moderator password: <input type="password" name="modcheck" /><br />
+<input type="checkbox" name="parsedefault" value="1" checked /> Enable SMPBNS Code Parser by default<br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Do it and save" />
 </form>
@@ -131,7 +133,7 @@ $baza=mysql_connect($_POST['serek'],$_POST['dbuser'],$_POST['dbpass'])
 or die("Failed to connect with MySQL server!");
 echo("Connected with MySQL server!<br />");
 mysql_select_db($_POST['dbname']);
-$zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, PRIMARY KEY(id))");
+$zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, parse BOOLEAN NOT NULL, PRIMARY KEY(id))");
 if($zapytanie == 1) {
 echo("Table created successfully!<br />");
 } else {
@@ -154,6 +156,11 @@ fputs($ustawienia,'$dbpass="'.$_POST['dbpass'].'"'.";\n");
 fputs($ustawienia,'$dbname="'.$_POST['dbname'].'"'.";\n");
 fputs($ustawienia,'$dbprefix="'.$_POST['dbprefix'].'"'.";\n");
 fputs($ustawienia,'$modpass="'.$_POST['modpass'].'"'.";\n");
+if($_POST['parsedefault'] == 1) {
+fputs($ustawienia,'$parsedefault='.$_POST['parsedefault'].";\n");
+} else {
+fputs($ustawienia,'$parsedefault=1'.";\n");	
+}
 fputs($ustawienia,'?>');
 flock($ustawienia,LOCK_UN);
 fclose($ustawienia);
