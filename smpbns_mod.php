@@ -563,7 +563,7 @@ if(file_exists("smpbns_settings.php")) {
 		} else {
 		$parse = 0;	
 		}
-		echo("DEBUG: Query: INSERT INTO ".$dbprefix."news_main VALUES (NULL,".'"'.$_POST['title'].'"'.",".'"'.$_POST['content'].'"'.",NULL,".$parse.")<br />");
+		//echo("DEBUG: Query: INSERT INTO ".$dbprefix."news_main VALUES (NULL,".'"'.$_POST['title'].'"'.",".'"'.$_POST['content'].'"'.",NULL,".$parse.")<br />");
 		$query=mysql_query("INSERT INTO ".$dbprefix."news_main VALUES (NULL,".'"'.$_POST['title'].'"'.",".'"'.$_POST['content'].'"'.",NULL,".$parse.")");
 		if($query == 1) {
 		?>
