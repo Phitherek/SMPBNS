@@ -469,6 +469,11 @@ if(file_exists("smpbns_settings.php")) {
 	<p class="smpbns_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś install.php!</p><br /><br />
 	<?php
 	}
+	if(file_exists("update.php")) {
+	?>
+	<p class="smpbns_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś update.php!</p><br /><br />
+	<?php
+	}
 	?>
 	<h2 class="smpbns_modmenu">Menu systemu moderacji:</h2><br /><br />
 	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_list" title="Wyświetl i moderuj aktualności">Wyświetl i moderuj aktualności</a><br />
