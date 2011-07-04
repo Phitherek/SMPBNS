@@ -173,7 +173,7 @@ fputs($ustawienia,'$accpass="'.$_POST['accpass'].'"'.";\n");
 if($_POST['parsedefault'] == 1) {
 fputs($ustawienia,'$parsedefault='.$_POST['parsedefault'].";\n");
 } else {
-fputs($ustawienia,'$parsedefault=1'.";\n");	
+fputs($ustawienia,'$parsedefault=0'.";\n");	
 }
 fputs($ustawienia,'?>');
 flock($ustawienia,LOCK_UN);
