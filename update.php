@@ -36,34 +36,27 @@ if(file_exists("smpbns_settings.php")) {
 	if($_POST['modlogin'] == 1) {
 	if($_POST['modlogin_pass'] == $modpass) {
 	$_SESSION[$prefix.'mod_login'] = 1;
-	$step = 1;
 	session_regenerate_id();
 	}
 	}
 	$step = $_POST['go'];
 	if($_SESSION[$prefix.'mod_login'] == 1) {
-		if($step == 1) {
-		?>
-		<p>Ten skrypt wykona odpowiednie zmiany w bazie danych oraz w pliku ustawień na potrzeby nowej wersji SMPBNS core z SMPBNS Code Parser.</p><br /><br />
-		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-		<input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
-		<input type="hidden" name="go" value="2" />
-		<input type="submit" value="Aktualizacja" />
-		</form>
-		<?php
-		} else if($step == 2) {
+		if($step == 2) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
 		echo("Połączono z serwerem MySQL!<br />");
-		$query = mysql_query("ALTER TABLE ".$dbprefix."_news_main ADD COLUMN parse BOOLEAN NOT NULL");
-		if($query == TRUE) {
-		echo("Tabela zmodyfikowana pomyślnie!<br />");	
-		} else {
+		//echo("DEBUG: Query: "."ALTER TABLE ".$dbprefix."news_main ADD COLUMN parse BOOLEAN NOT NULL"."<br />");
+		$query = mysql_query("ALTER TABLE ".$dbprefix."news_main ADD COLUMN parse BOOLEAN NOT NULL");
+		if($query == false) {
 		die("Nie udało się zmodyfikować tabeli!");	
+		} else {
+		echo("Tabela zmodyfikowana pomyślnie!<br />");	
 		}
 		mysql_close($baza);
 		$backup = rename("smpbns_settings.php", "smpbns_settings_backup.php");
-		if($backup == TRUE) {
+		if($backup == false) {
+		echo("Nie udało się utworzyć kopii zapasowej ustawień!");
+		} else {
 		$ustawienia=fopen("smpbns_settings.php","w");
 flock($ustawienia,LOCK_EX);
 fputs($ustawienia,'<?php '."\n");
@@ -85,13 +78,21 @@ if(file_exists("smpbns_settings.php")) {
 echo("Ustawienia zostały zapisane!<br />");
 unlink("smpbns_settings_backup.php");
 echo("Aktualizacja zakończona! WAŻNE: Skasuj ten plik update.php z serwera, aby nikt nie mógł zepsuć Twoich ustawień!");
+$_SESSION[$prefix.'mod_login'] = 0;
 } else {
 echo("Nie można było zapisać ustawień! Sprawdź, czy katalog z plikami systemu SMPBNS ma uprawnienia 777 (lub rwxrwxrwx), jeżeli nie, to zmień je, a następnie uruchom ten plik update.php ponownie!<br />");
 rename("smpbns_settings_backup.php", "smpbns_settings.php");
-}	
-		} else {
-		echo("Nie udało się utworzyć kopii zapasowej ustawień!");
+}		
 		}
+		} else {
+		?>
+		<p>Ten skrypt wykona odpowiednie zmiany w bazie danych oraz w pliku ustawień na potrzeby nowej wersji SMPBNS core z SMPBNS Code Parser.</p><br /><br />
+		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+		<input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
+		<input type="hidden" name="go" value="2" />
+		<input type="submit" value="Aktualizacja" />
+		</form>
+		<?php
 		}
 	} else {
 	?>
