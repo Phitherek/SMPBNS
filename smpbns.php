@@ -436,7 +436,25 @@ if(file_exists("smpbns_settings.php")) {
 	$dball=mysql_query("SELECT * FROM ".$dbprefix."news_main");
 	$rows=mysql_num_rows($dball);
 	if($rows != NULL) {
-		for($id = 1; $id <= $rows; $id++) {
+	?>
+	<p class="smpbns_pages">Strona: <?php
+	$numpages = round($rows/$perpage);
+	for($num = 1; $num <= $numpages; $num++) {
+		if($_POST['page'] == NULL AND $num==1) {
+		echo($num);
+		echo(" ");
+		} else if($num == $_POST['page']) {
+		echo($num);
+		echo(" ");	
+		} else {
+		echo('<a class="smpbns_pagelink" href="'.$_SERVER["PHP_SELF"].'?page='.$num.'">'.$num."</a> ");	
+		}
+	}
+	?>
+	</p><br /><br />
+	<?php
+		if($_GET['page'] == NULL OR $_GET['page'] == 1) {
+		for($id = 1; $id <= $perpage; $id++) {
 			$query=mysql_query("SELECT parse FROM ".$dbprefix."news_main WHERE id=".$id);
 			$parse=mysql_fetch_array($query);
 			$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
@@ -479,6 +497,67 @@ if(file_exists("smpbns_settings.php")) {
 		<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?></p><br /><br />
 		<?php
 		}
+		} else {
+		for($id = ($_GET['page']-1)*$perpage+1; $id <= $perpage*$_GET['page']; $id++) {
+			$query=mysql_query("SELECT parse FROM ".$dbprefix."news_main WHERE id=".$id);
+			$parse=mysql_fetch_array($query);
+			$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
+			$title=mysql_fetch_array($query);
+		if($title != NULL) {
+		if($parse['parse'] == false OR $parse == NULL) {
+			?>
+			<h3 class="smpbns_title"><?php echo $title['title']; ?></h3><hr />
+			<?php
+			} else {
+			?>
+			<h3 class="smpbns_title"><?php echo parse($title['title']); ?></h3><hr />
+			<?php
+			}
+		} else {
+		?>
+		<h3 class="smpbns_title">Brak tytułu</h3><hr />
+		<?php
+		}
+		$query=mysql_query("SELECT content FROM ".$dbprefix."news_main WHERE id=".$id);
+		$content=mysql_fetch_array($query);
+		if($content != NULL) {
+		if($parse['parse'] == false OR $parse == NULL) {	
+				?>
+				<p class="smpbns_news"><?php echo $content['content']; ?></p><hr />
+				<?php
+				} else {
+				?>
+				<p class="smpbns_news"><?php echo parse($content['content']); ?></p><hr />
+				<?php	
+				}
+		} else {
+		?>
+		<p class="smpbns_news">Brak treści</p><hr />
+		<?php
+		}
+		$query=mysql_query("SELECT added FROM ".$dbprefix."news_main WHERE id=".$id);
+		$added=mysql_fetch_array($query);
+		?>
+		<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?></p><br /><br />
+		<?php	
+		}
+		?>
+		<p class="smpbns_pages">Strona: <?php
+	$numpages = round($rows/$perpage);
+	for($num = 1; $num <= $numpages; $num++) {
+		if($_POST['page'] == NULL AND $num==1) {
+		echo($num);
+		echo(" ");
+		} else if($num == $_POST['page']) {
+		echo($num);
+		echo(" ");	
+		} else {
+		echo('<a class="smpbns_pagelink" href="'.$_SERVER["PHP_SELF"].'?page='.$num.'">'.$num."</a> ");	
+		}
+	}
+	?>
+	</p><br /><br />
+		<?php
 	} else {
 	?>
 <p class="smpbns_info">Brak rekordów w bazie danych</p>

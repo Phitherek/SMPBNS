@@ -104,6 +104,7 @@ Nazwa bazy danych: <input type="text" name="dbname" value="<?php echo $_POST['db
 Prefiks tabeli: <input type="text" name="dbprefix" value="smpbns_" /><br />
 Hasło moderatora: <input type="password" name="modpass" /><br />
 Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
+Liczba wpisów na stronę: <input type="text" name="perpage" value=10 /><br />
 <input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
@@ -120,6 +121,7 @@ Nazwa bazy danych: <input type="text" name="dbname" value="smpbns" /><br />
 Prefiks tabeli: <input type="text" name="dbprefix" value="smpbns_" /><br />
 Hasło moderatora: <input type="password" name="modpass" /><br />
 Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
+Liczba wpisów na stronę: <input type="text" name="perpage" value=10 /><br />
 <input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
@@ -128,6 +130,7 @@ Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 <?php
 }
 } else if($step==4) {
+	if($_POST['perpage'] != NULL) {
 echo("<h1>Ustawianie MySQL i zapisywanie ustawień</h1><br /><br />");
 $baza=mysql_connect($_POST['serek'],$_POST['dbuser'],$_POST['dbpass'])
 or die("Połączenie z serwerem MySQL nieudane!");
@@ -146,6 +149,16 @@ Błąd! Tabela nie została utworzona! Ustawienia nie zostaną zapisane!<br />
 <?php
 $fail=1;
 }
+	} else {
+	?>
+Błąd! Pusta ilość wpisów na stronę! Ustawienia nie zostaną zapisane!<br />
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="hidden" name="go" value="3" />
+<input type="submit" value="Powrót" />
+</form>
+<?php
+$fail=1;
+	}
 if($fail!=1) {
 $ustawienia=fopen("smpbns_settings.php","w");
 flock($ustawienia,LOCK_EX);
@@ -156,6 +169,7 @@ fputs($ustawienia,'$dbpass="'.$_POST['dbpass'].'"'.";\n");
 fputs($ustawienia,'$dbname="'.$_POST['dbname'].'"'.";\n");
 fputs($ustawienia,'$dbprefix="'.$_POST['dbprefix'].'"'.";\n");
 fputs($ustawienia,'$modpass="'.$_POST['modpass'].'"'.";\n");
+fputs($ustawienia,'$perpage="'.$_POST['perpage'].'"'.";\n");
 if($_POST['parsedefault'] == 1) {
 fputs($ustawienia,'$parsedefault='.$_POST['parsedefault'].";\n");
 } else {
