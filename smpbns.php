@@ -498,7 +498,12 @@ if(file_exists("smpbns_settings.php")) {
 		<?php
 		}
 		} else {
-		for($id = ($_GET['page']-1)*$perpage+1; $id <= $perpage*$_GET['page']; $id++) {
+			if($perpage*$_GET['page'] > $rows) {
+			$end = $rows;	
+			} else {
+			$end = $perpage*$_GET['page'];
+			}
+			for($id = ($_GET['page']-1)*$perpage+1; $id <= $end; $id++) {
 			$query=mysql_query("SELECT parse FROM ".$dbprefix."news_main WHERE id=".$id);
 			$parse=mysql_fetch_array($query);
 			$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
@@ -558,6 +563,7 @@ if(file_exists("smpbns_settings.php")) {
 	?>
 	</p><br /><br />
 		<?php
+		}
 	} else {
 	?>
 <p class="smpbns_info">Brak rekordów w bazie danych</p>
