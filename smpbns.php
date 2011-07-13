@@ -438,12 +438,12 @@ if(file_exists("smpbns_settings.php")) {
 	if($rows != NULL) {
 	?>
 	<p class="smpbns_pages">Strona: <?php
-	$numpages = round($rows/$perpage);
+	$numpages = ceil($rows/$perpage);
 	for($num = 1; $num <= $numpages; $num++) {
-		if($_POST['page'] == NULL AND $num==1) {
+		if($_GET['page'] == NULL AND $num==1) {
 		echo($num);
 		echo(" ");
-		} else if($num == $_POST['page']) {
+		} else if($num == $_GET['page']) {
 		echo($num);
 		echo(" ");	
 		} else {
@@ -546,14 +546,15 @@ if(file_exists("smpbns_settings.php")) {
 		<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?></p><br /><br />
 		<?php	
 		}
+		}
 		?>
 		<p class="smpbns_pages">Strona: <?php
-	$numpages = round($rows/$perpage);
+	$numpages = ceil($rows/$perpage);
 	for($num = 1; $num <= $numpages; $num++) {
-		if($_POST['page'] == NULL AND $num==1) {
+		if($_GET['page'] == NULL AND $num==1) {
 		echo($num);
 		echo(" ");
-		} else if($num == $_POST['page']) {
+		} else if($num == $_GET['page']) {
 		echo($num);
 		echo(" ");	
 		} else {
@@ -563,7 +564,6 @@ if(file_exists("smpbns_settings.php")) {
 	?>
 	</p><br /><br />
 		<?php
-		}
 	} else {
 	?>
 <p class="smpbns_info">Brak rekordów w bazie danych</p>
