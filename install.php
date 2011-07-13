@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SMPBNS - Instalacja</title>
+<title>Phitherek_' s SMPBNS - MOD: Pages - Instalacja</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>
 <body>

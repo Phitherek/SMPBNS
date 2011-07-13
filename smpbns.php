@@ -423,7 +423,7 @@ function parse($toparse) {
 ?>
 <html>
 <head>
-<title>Phitherek_' s SMPBNS - Główny plik systemu - ten tytuł można później zmienić</title>
+<title>Phitherek_' s SMPBNS - MOD: Pages - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
@@ -578,6 +578,7 @@ mysql_close($baza);
 ?>
 <a class="smpbns_admin" href="smpbns_mod.php" title="Moderacja">Moderacja</a><br />
 <hr />
-<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_</p>
+<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />
+MOD: Pages | &copy; 2011 by Phitherek_</p>
 </body>
 </html>
