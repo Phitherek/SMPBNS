@@ -423,7 +423,7 @@ function parse($toparse) {
 ?>
 <html>
 <head>
-<title>Phitherek_' s SMPBNS - Główny plik systemu - ten tytuł można później zmienić</title>
+<title>Phitherek_' s SMPBNS - MOD: SLMmed - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
@@ -431,6 +431,16 @@ function parse($toparse) {
 <?php
 if(file_exists("smpbns_settings.php")) {
 	include("smpbns_settings.php");
+	include("slm_include/loginform.php");
+	include("slm_include/userinfo.php");
+	if($slmlock == 1) {
+		if($slmreglock == 1) {
+	slm_loginpage_sub(1,0);	
+		} else {
+		slm_loginpage_sub();	
+		}
+	}
+	slm_userinfo();
 	$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 	mysql_select_db($dbname);
 	$dball=mysql_query("SELECT * FROM ".$dbprefix."news_main");
@@ -491,8 +501,9 @@ mysql_close($baza);
 <?php
 }
 ?>
-<a class="smpbns_admin" href="smpbns_mod.php" title="Moderacja">Moderacja</a><br />
+<a class="smpbns_admin" href="smpbns_mod.php" title="Moderacja">Moderacja SMPBNS</a><br />
 <hr />
-<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_</p>
+<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />
+MOD: SLMmed | &copy; 2011 by Phitherek_ | uses SLM | &copy; 2010-2011 by Phitherek_</p>
 </body>
 </html>

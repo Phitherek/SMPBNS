@@ -105,6 +105,8 @@ Prefiks tabeli: <input type="text" name="dbprefix" value="smpbns_" /><br />
 Hasło moderatora: <input type="password" name="modpass" /><br />
 Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 <input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
+<input type="checkbox" name="slmlock" value="1" /> Użyj SLMlock (zablokuj dostęp niezarejestrowanym użytkownikom)<br />
+<input type="checkbox" name="slmreglock" value="1" /> Rejestracja dozwolona tylko dla administratorów<br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -121,6 +123,8 @@ Prefiks tabeli: <input type="text" name="dbprefix" value="smpbns_" /><br />
 Hasło moderatora: <input type="password" name="modpass" /><br />
 Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 <input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
+<input type="checkbox" name="slmlock" value="1" /> Użyj SLMlock (zablokuj dostęp niezarejestrowanym użytkownikom)<br />
+<input type="checkbox" name="slmreglock" value="1" /> Rejestracja dozwolona tylko dla administratorów<br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -161,6 +165,16 @@ fputs($ustawienia,'$parsedefault='.$_POST['parsedefault'].";\n");
 } else {
 fputs($ustawienia,'$parsedefault=0'.";\n");	
 }
+if($_POST['slmlock'] == 1) {
+fputs($ustawienia,'$slmlock='.$_POST['parsedefault'].";\n");
+} else {
+fputs($ustawienia,'$slmlock=0'.";\n");	
+}
+if($_POST['slmreglock'] == 1) {
+fputs($ustawienia,'$slmreglock='.$_POST['parsedefault'].";\n");
+} else {
+fputs($ustawienia,'$slmreglock=0'.";\n");	
+}
 fputs($ustawienia,'?>');
 flock($ustawienia,LOCK_UN);
 fclose($ustawienia);
@@ -169,7 +183,7 @@ echo("Ustawienia zostały zapisane!<br />");
 } else {
 echo("Nie można było zapisać ustawień! Sprawdź, czy katalog z plikami systemu SMPBNS ma uprawnienia 777 (lub rwxrwxrwx), jeżeli nie, to zmień je, a następnie usuń tabelę (prefix)_news_main (i bazę danych) z serwera MySQL, zakończ sesję przeglądarki, a następnie uruchom ten plik install.php ponownie!<br />");
 }
-echo("<br /> Koniec instalacji! WAŻNE: Skasuj ten plik install.php z serwera, aby nikt nie mógł zmienić Twoich ustawień!");
+echo("<br /> Koniec instalacji! WAŻNE: Skasuj ten plik install.php z serwera, aby nikt nie mógł zmienić Twoich ustawień! Aby korzystać z SUDS z modem SLMlock, musisz zainstalować SLM. W tym celu uruchom <a href=".'"slm_install.php"'.">slm_install.php</a>, jeżeli jeszcze tego nie zrobiłeś/aś.");
 }
 }
 } else {

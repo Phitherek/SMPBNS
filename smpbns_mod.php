@@ -423,7 +423,7 @@ function parse($toparse) {
 ?>
 <html>
 <head>
-<title>Phitherek_' s SMPBNS - System moderacji - tytuł może być później zmieniony</title>
+<title>Phitherek_' s SMPBNS - MOD: SLMmed - System moderacji - tytuł może być później zmieniony</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
@@ -457,6 +457,16 @@ $_SESSION[$prefix.'started'] = true;
 }
 if(file_exists("smpbns_settings.php")) {
 	include("smpbns_settings.php");
+	include("slm_include/adminonly.php");
+include("slm_include/userinfo.php");
+include("slm_include/loginform.php");
+slm_userinfo(1,0,"login.php","logout.php");
+if($slmreglock == 1) {
+	slm_loginpage_sub(1,0);	
+		} else {
+		slm_loginpage_sub();	
+		}
+		slm_userinfo();
 	if($_POST['modlogin'] == 1) {
 	if($_POST['modlogin_pass'] == $modpass) {
 	$_SESSION[$prefix.'mod_login'] = 1;
@@ -473,6 +483,7 @@ if(file_exists("smpbns_settings.php")) {
 	<h2 class="smpbns_modmenu">Menu systemu moderacji:</h2><br /><br />
 	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_list" title="Wyświetl i moderuj aktualności">Wyświetl i moderuj aktualności</a><br />
 	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=add_new" title="Dodaj nową wiadomość">Dodaj nową wiadomość</a><br />
+	<a class="suds_modmenu" href="register.php" title="Zarejestruj użytkownika SLM">Zarejestruj użytkownika SLM</a><br />
 	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=logout" title="Wyloguj">Wyloguj</a><br />
 	<hr />
 	<?php
@@ -703,6 +714,8 @@ echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej insta
 ?>
 <br />
 <a class="smpbns_main_link" href="smpbns.php" title="Indeks systemu SMPBNS">Indeks systemu SMPBNS</a><hr />
-<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_</p>
+<a class="suds_slmadmin" href="slm_admin.php">Administracja SLM</a><hr />
+<p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />
+MOD: SLMmed | &copy; 2011 by Phitherek_ | uses SLM | &copy; 2010-2011 by Phitherek_</p>
 </body>
 </html>

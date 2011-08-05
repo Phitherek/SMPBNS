@@ -1,10 +1,6 @@
-SMPBNS - Simple MySQL and PHP Based News System
+Phitherek_' s SLM - Simple Login Method
+A login system in PHP
 
-For installation instructions refer to INSTALLNOTES.
+The SLM is ready to use! Enjoy!
 
-Planned TODO:
-1. MOD: SLMmed (see SLM repo).
-
-Enjoy!
-
-Branch master: SMPBNS in Polish, base version.
+Branch master: Polish version, core files.
