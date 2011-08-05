@@ -460,23 +460,21 @@ if(file_exists("smpbns_settings.php")) {
 	include("slm_include/adminonly.php");
 include("slm_include/userinfo.php");
 include("slm_include/loginform.php");
-slm_userinfo(1,0,"login.php","logout.php");
 if($slmreglock == 1) {
 	slm_loginpage_sub(1,0);	
 		} else {
 		slm_loginpage_sub();	
 		}
+		slm_adminonly("smpbns.php","smpbns.php","Indeks systemu SMPBNS");
 		slm_userinfo();
-	if($_POST['modlogin'] == 1) {
-	if($_POST['modlogin_pass'] == $modpass) {
-	$_SESSION[$prefix.'mod_login'] = 1;
-	session_regenerate_id();
-	}
-	}
-	if($_SESSION[$prefix.'mod_login'] == 1) {
 	if(file_exists("install.php")) {
 	?>
-	<p class="smpbns_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś install.php!</p><br /><br />
+	<p class="smpbns_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś install.php!</p><br />
+	<?php
+	}
+	if(file_exists("slm_install.php")) {
+	?>
+	<p class="smpbns_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś slm_install.php!</p><br /><br />
 	<?php
 	}
 	?>
@@ -484,7 +482,7 @@ if($slmreglock == 1) {
 	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_list" title="Wyświetl i moderuj aktualności">Wyświetl i moderuj aktualności</a><br />
 	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=add_new" title="Dodaj nową wiadomość">Dodaj nową wiadomość</a><br />
 	<a class="suds_modmenu" href="register.php" title="Zarejestruj użytkownika SLM">Zarejestruj użytkownika SLM</a><br />
-	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=logout" title="Wyloguj">Wyloguj</a><br />
+	<a class="smpbns_modmenu" href="logout.php" title="Wyloguj">Wyloguj</a><br />
 	<hr />
 	<?php
 	if($_GET['action'] == "news_list") {
@@ -676,25 +674,10 @@ if($slmreglock == 1) {
 		<?php
 		}
 		}
-	} else if($_GET['action'] == "logout") {
-		$_SESSION[$prefix.'mod_login'] = 0;
-		?>
-		<p class="smpbns_info">Wylogowano Cię z systemu moderacji SMPBNS! Możesz teraz przejść na stronę główną systemu, lub zalogować się jeszcze raz, ponownie wchodząc na tą stronę.</p>
-		<?php
 	} else {
 	?>
 	<p class="smpbns_text">Witaj w systemie moderacji SMPBNS! Wybierz działanie z menu, znajdującego się na górze strony. Kiedy skończysz pracę, wyloguj się.</p>
 	<?php
-	}
-	} else {
-	?>
-	<p class="smpbns_modlogin_text">Podaj hasło moderatora:</p><br />
-	<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-		<input type="password" name="modlogin_pass" /><br />
-		<input type="hidden" name="modlogin" value="1" />
-		<input type="submit" value="Zaloguj" />
-	</form>
-<?php
 	}
 } else {
 ?>
@@ -713,7 +696,7 @@ echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej insta
 }
 ?>
 <br />
-<a class="smpbns_main_link" href="smpbns.php" title="Indeks systemu SMPBNS">Indeks systemu SMPBNS</a><hr />
+<a class="smpbns_main_link" href="smpbns.php" title="Indeks systemu SMPBNS">Indeks systemu SMPBNS</a><br /><br />
 <a class="suds_slmadmin" href="slm_admin.php">Administracja SLM</a><hr />
 <p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />
 MOD: SLMmed | &copy; 2011 by Phitherek_ | uses SLM | &copy; 2010-2011 by Phitherek_</p>

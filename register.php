@@ -11,7 +11,7 @@ slm_adminonly("smpbns.php","smpbns.php","Indeks systemu SMPBNS");
 }
 include("slm_include/register.php");
 include("slm_include/footer.php");
-slm_register(1,"smpbns_mod.php");
+slm_register(1,"smpbns.php");
 slm_footer("smpbns_mod.php","Moderacja SMPBNS");
 ?>
 </body>

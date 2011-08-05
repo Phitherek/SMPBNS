@@ -37,17 +37,6 @@ if($_POST['beginpass']=="BtW24oPx") {
 }
 if($_SESSION[$prefix.'login'] == 1) {
 $step = $_POST['go'];
-if($step == 4) {
-if($_POST['modpass']!=NULL) {	
-if($_POST['modpass'] != $_POST['modcheck']) {
-$step = 3;
-echo("Hasło moderatora nie zgadza się z powtórzonym hasłem moderatora!");
-}
-} else {
-$step = 3;
-echo("Nie wpisałeś hasła moderatora!");
-}
-}
 if($step == 1) {
 ?>
 <h1>Ustawianie MySQL</h1><br />
@@ -92,6 +81,9 @@ Błąd podczas tworzenia nowej bazy danych!<br />
 <input type="submit" value="Powrót" />
 </form>
 <?php
+echo("Zamykam połączenie z serwerem MySQL...<br />");
+mysql_close($baza);
+die();
 }
 echo("Zamykam połączenie z serwerem MySQL...<br />");
 mysql_close($baza);
@@ -102,8 +94,6 @@ Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="<?php echo $_P
 Hasło MySQL: <input type="password" name="dbpass" /><br />
 Nazwa bazy danych: <input type="text" name="dbname" value="<?php echo $_POST['dbname']; ?>" /><br />
 Prefiks tabeli: <input type="text" name="dbprefix" value="smpbns_" /><br />
-Hasło moderatora: <input type="password" name="modpass" /><br />
-Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 <input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
 <input type="checkbox" name="slmlock" value="1" /> Użyj SLMlock (zablokuj dostęp niezarejestrowanym użytkownikom)<br />
 <input type="checkbox" name="slmreglock" value="1" /> Rejestracja dozwolona tylko dla administratorów<br />
@@ -120,8 +110,6 @@ Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="root" /><br />
 Hasło MySQL: <input type="password" name="dbpass" /><br />
 Nazwa bazy danych: <input type="text" name="dbname" value="smpbns" /><br />
 Prefiks tabeli: <input type="text" name="dbprefix" value="smpbns_" /><br />
-Hasło moderatora: <input type="password" name="modpass" /><br />
-Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 <input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
 <input type="checkbox" name="slmlock" value="1" /> Użyj SLMlock (zablokuj dostęp niezarejestrowanym użytkownikom)<br />
 <input type="checkbox" name="slmreglock" value="1" /> Rejestracja dozwolona tylko dla administratorów<br />
@@ -159,7 +147,6 @@ fputs($ustawienia,'$dbuser="'.$_POST['dbuser'].'"'.";\n");
 fputs($ustawienia,'$dbpass="'.$_POST['dbpass'].'"'.";\n");
 fputs($ustawienia,'$dbname="'.$_POST['dbname'].'"'.";\n");
 fputs($ustawienia,'$dbprefix="'.$_POST['dbprefix'].'"'.";\n");
-fputs($ustawienia,'$modpass="'.$_POST['modpass'].'"'.";\n");
 if($_POST['parsedefault'] == 1) {
 fputs($ustawienia,'$parsedefault='.$_POST['parsedefault'].";\n");
 } else {
