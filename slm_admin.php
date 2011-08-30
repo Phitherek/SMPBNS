@@ -7,7 +7,9 @@
 <body>
 <?php
 include("slm_include/prefixinclude.php");
-prefixinclude("slm_prefix.php");
+global $prefix;
+global $prefixexists;
+prefixinclude("smpbns_prefix.php");
 include("slm_include/loginform.php");
 include("slm_include/adminonly.php");
 include("slm_include/footer.php");

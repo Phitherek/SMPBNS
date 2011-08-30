@@ -1,6 +1,7 @@
 <?php
 function slm_adminonly($link="index.php",$footerlinkpage="index.php", $footerlinktext="Indeks") {
 	global $prefixexists;
+	global $prefix;
 	if(!$prefixexists) {
 	include("slm_include/prefixinclude.php");
 	prefixinclude("smpbns_prefix.php");

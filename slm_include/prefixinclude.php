@@ -1,6 +1,7 @@
 <?php
-function prefixinclude($prefixflie="slm_prefix.php") {
+function prefixinclude($prefixflie="smpbns_prefix.php") {
 global $prefixexists;
+global $prefix;
 if($_POST['setprefix'] == 1) {
 $prefixfile=fopen($prefixflie,"w");
 flock($prefixfile, LOCK_EX);

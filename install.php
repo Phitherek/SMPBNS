@@ -125,7 +125,7 @@ $baza=mysql_connect($_POST['serek'],$_POST['dbuser'],$_POST['dbpass'])
 or die("Połączenie z serwerem MySQL nieudane!");
 echo("Połączono z serwerem MySQL!<br />");
 mysql_select_db($_POST['dbname']);
-$zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, parse BOOLEAN NOT NULL, PRIMARY KEY(id))");
+$zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, parse BOOLEAN NOT NULL, user VARCHAR(100), PRIMARY KEY(id))");
 if($zapytanie == 1) {
 echo("Tabela została utworzona poprawnie!<br />");
 } else {

@@ -1,6 +1,7 @@
 <?php
 function slm_passwd() {
 	global $prefixexists;
+	global $prefix;
 	if(!$prefixexists) {
 	include("slm_include/prefixinclude.php");
 	prefixinclude("smpbns_prefix.php");

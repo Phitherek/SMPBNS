@@ -1,5 +1,6 @@
 <?php
 function slm_userfile_read($username) {
+	global $prefix;
 	if(file_exists("slm_users/".$username.".php")) {
 		include("slm_users/".$username.".php");
 		$_SESSION[$prefix.'slm_userfile_type'] = $type;
@@ -11,6 +12,7 @@ function slm_userfile_read($username) {
 
 function slm_userfile_winit($username) {
 	global $prefixexists;
+	global $prefix;
 	if(!$prefixexists) {
 	include("slm_include/prefixinclude.php");
 prefixinclude("smpbns_prefix.php");
@@ -58,6 +60,7 @@ global $f;
 
 function slm_userfile_wclose() {
 	global $prefixexists;
+	global $prefix;
 	if(!$prefixexists) {
 	include("slm_include/prefixinclude.php");
 prefixinclude("smpbns_prefix.php");

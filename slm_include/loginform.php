@@ -2,6 +2,7 @@
 function slm_loginpage_main($banmode=1,$register=1,$registerpage="register.php",$redirect="index.php")
 {
 	global $prefixexists;
+	global $prefix;
 	if(!$prefixexists) {
 include("slm_include/prefixinclude.php");
 prefixinclude("smpbns_prefix.php");
@@ -92,6 +93,7 @@ window.location.href = "<?php echo $redirect; ?>";
 function slm_loginpage_sub($banmode=1,$register=1,$registerpage="register.php")
 {
 	global $prefixexists;
+	global $prefix;
 	if(!$prefixexists) {
 	include("slm_include/prefixinclude.php");
 prefixinclude("smpbns_prefix.php");

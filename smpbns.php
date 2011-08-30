@@ -483,6 +483,11 @@ if(file_exists("smpbns_settings.php")) {
 		<p class="smpbns_news">Brak treści</p><hr />
 		<?php
 		}
+		$query=mysql_query("SELECT user FROM ".$dbprefix."news_main WHERE id=".$id);
+		$user=mysql_fetch_array($query);
+		?>
+		<p class="smpbns_date">Wiadomość dodał: <?php echo $user['user']; ?></p><br /><br />
+		<?php
 		$query=mysql_query("SELECT added FROM ".$dbprefix."news_main WHERE id=".$id);
 		$added=mysql_fetch_array($query);
 		?>

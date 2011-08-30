@@ -1,9 +1,10 @@
 <?php
 function slm_userinfo($showlink=1,$showunlogged=1,$loginpage="login.php",$logoutpage="logout.php") {
 	global $prefixexists;
+	global $prefix;
 	if(!$prefixexists) {
 	include("slm_include/prefixinclude.php");
-prefixinclude("../slm_prefix.php");
+prefixinclude("smpbns_prefix.php");
 	}
 session_start();
 if (!isset($_SESSION[$prefix.'started'])) {
