@@ -486,12 +486,14 @@ if(file_exists("smpbns_settings.php")) {
 		$query=mysql_query("SELECT user FROM ".$dbprefix."news_main WHERE id=".$id);
 		$user=mysql_fetch_array($query);
 		?>
-		<p class="smpbns_date">Wiadomość dodał: <?php echo $user['user']; ?></p><br /><br />
+		<p class="smpbns_date">Wiadomość dodał(a): <?php echo $user['user']; ?></p><br /><br />
 		<?php
 		$query=mysql_query("SELECT added FROM ".$dbprefix."news_main WHERE id=".$id);
 		$added=mysql_fetch_array($query);
+		$query=mysql_query("SELECT umod FROM ".$dbprefix."news_main WHERE id=".$id);
+		$umod=mysql_fetch_array($query);
 		?>
-		<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?></p><br /><br />
+		<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?> przez: <?php echo $umod['umod']; ?></p><br /><br />
 		<?php
 		}
 	} else {

@@ -97,6 +97,7 @@ Prefiks tabeli: <input type="text" name="dbprefix" value="smpbns_" /><br />
 <input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
 <input type="checkbox" name="slmlock" value="1" /> Użyj SLMlock (zablokuj dostęp niezarejestrowanym użytkownikom)<br />
 <input type="checkbox" name="slmreglock" value="1" /> Rejestracja dozwolona tylko dla administratorów<br />
+<input type="checkbox" name="myonly" value="1" /> Tryb MyOnly - administrator może moderować tylko swoje wpisy<br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -113,6 +114,7 @@ Prefiks tabeli: <input type="text" name="dbprefix" value="smpbns_" /><br />
 <input type="checkbox" name="parsedefault" value="1" checked /> Domyślnie włącz SMPBNS Code Parser<br />
 <input type="checkbox" name="slmlock" value="1" /> Użyj SLMlock (zablokuj dostęp niezarejestrowanym użytkownikom)<br />
 <input type="checkbox" name="slmreglock" value="1" /> Rejestracja dozwolona tylko dla administratorów<br />
+<input type="checkbox" name="myonly" value="1" /> Tryb MyOnly - administrator może moderować tylko swoje wpisy<br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -125,7 +127,7 @@ $baza=mysql_connect($_POST['serek'],$_POST['dbuser'],$_POST['dbpass'])
 or die("Połączenie z serwerem MySQL nieudane!");
 echo("Połączono z serwerem MySQL!<br />");
 mysql_select_db($_POST['dbname']);
-$zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, parse BOOLEAN NOT NULL, user VARCHAR(100), PRIMARY KEY(id))");
+$zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, parse BOOLEAN NOT NULL, user VARCHAR(100), umod VARCHAR(100), PRIMARY KEY(id))");
 if($zapytanie == 1) {
 echo("Tabela została utworzona poprawnie!<br />");
 } else {
@@ -153,14 +155,19 @@ fputs($ustawienia,'$parsedefault='.$_POST['parsedefault'].";\n");
 fputs($ustawienia,'$parsedefault=0'.";\n");	
 }
 if($_POST['slmlock'] == 1) {
-fputs($ustawienia,'$slmlock='.$_POST['parsedefault'].";\n");
+fputs($ustawienia,'$slmlock='.$_POST['slmlock'].";\n");
 } else {
 fputs($ustawienia,'$slmlock=0'.";\n");	
 }
 if($_POST['slmreglock'] == 1) {
-fputs($ustawienia,'$slmreglock='.$_POST['parsedefault'].";\n");
+fputs($ustawienia,'$slmreglock='.$_POST['slmreglock'].";\n");
 } else {
 fputs($ustawienia,'$slmreglock=0'.";\n");	
+}
+if($_POST['myonly'] == 1) {
+fputs($ustawienia,'$myonly='.$_POST['myonly'].";\n");
+} else {
+fputs($ustawienia,'$myonly=0'.";\n");	
 }
 fputs($ustawienia,'?>');
 flock($ustawienia,LOCK_UN);

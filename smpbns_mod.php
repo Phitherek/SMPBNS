@@ -531,12 +531,21 @@ if($slmreglock == 1) {
 				$query=mysql_query("SELECT user FROM ".$dbprefix."news_main WHERE id=".$id);
 				$user=mysql_fetch_array($query);
 				?>
-				<p class="smpbns_date">Wiadomość dodał: <?php echo $user['user']; ?></p><br /><br />
+				<p class="smpbns_date">Wiadomość dodał(a): <?php echo $user['user']; ?></p><br /><br />
 				<?php
 				$query=mysql_query("SELECT added FROM ".$dbprefix."news_main WHERE id=".$id);
 				$added=mysql_fetch_array($query);
+				$query=mysql_query("SELECT umod FROM ".$dbprefix."news_main WHERE id=".$id);
+				$umod=mysql_fetch_array($query);
 				?>
-				<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?></p><br />
+				<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?> przez: <?php echo $umod['umod']; ?></p><br />
+				<?php
+				if($myonly == 1 AND $user['user'] != $_SESSION[$prefix."slm_username"]) {
+				?>
+				<p class="smpbns_info">Włączony jest tryb MyOnly - nie możesz moderować tego wpisu.</p><br />
+				<?php
+				} else {
+				?>
 				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_edit" method="post">
 				<input type="hidden" name="id" value=<?php echo $id; ?> />
 				<input type="submit" value="Edytuj" />
@@ -547,6 +556,7 @@ if($slmreglock == 1) {
 				<input type="submit" value="Usuń" />
 				</form>
 				<?php
+				}
 			}
 		} else {
 		?>
@@ -572,7 +582,7 @@ if($slmreglock == 1) {
 		} else {
 		$parse = 0;	
 		}
-		$query=mysql_query("INSERT INTO ".$dbprefix."news_main VALUES (NULL,".'"'.$_POST['title'].'"'.",".'"'.$_POST['content'].'"'.",NULL,".$parse.",".'"'.$_SESSION[$prefix.'slm_username'].'"'.")");
+		$query=mysql_query("INSERT INTO ".$dbprefix."news_main VALUES (NULL,".'"'.$_POST['title'].'"'.",".'"'.$_POST['content'].'"'.",NULL,".$parse.",".'"'.$_SESSION[$prefix.'slm_username'].'"'.",".'"'.$_SESSION[$prefix.'slm_username'].'"'.")");
 		if($query == 1) {
 		?>
 		<p class="smpbns_info">Wpis został dodany!</p><br />
@@ -606,7 +616,7 @@ if($slmreglock == 1) {
 		} else {
 		$parse = 0;	
 		}
-		$query=mysql_query("UPDATE ".$dbprefix."news_main SET title=".'"'.$_POST['title'].'"'.",content=".'"'.$_POST['content'].'"'.",parse=".$parse." WHERE id=".$_POST['id']);
+		$query=mysql_query("UPDATE ".$dbprefix."news_main SET title=".'"'.$_POST['title'].'"'.",content=".'"'.$_POST['content'].'"'.",parse=".$parse.",umod=".'"'.$_SESSION[$prefix."slm_username"].'"'." WHERE id=".$_POST['id']);
 		if($query == 1) {
 		?>
 		<p class="smpbns_info">Wpis zaktualizowany pomyślnie!</p><br />
