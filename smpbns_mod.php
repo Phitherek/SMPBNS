@@ -631,6 +631,16 @@ if($slmreglock == 1) {
 		mysql_select_db($dbname);
 		$id = $_POST['id'];
 		if($id != NULL) {
+			if($myonly == 1) {
+			$query=mysql_query("SELECT user FROM ".$dbprefix."news_main WHERE id=".$id);
+		$user=mysql_fetch_array($query);
+		}
+		if($myonly == 1 AND $user['user'] != $_SESSION[$prefix."slm_username"]) {
+				?>
+				<p class="smpbns_error">Włączony jest tryb MyOnly - nie możesz moderować tego wpisu.</p><br />
+				<?php
+				mysql_close($baza);
+				} else {
 		$query=mysql_query("SELECT parse FROM ".$dbprefix."news_main WHERE id=".$id);
 		$parse=mysql_fetch_array($query);	
 		$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
@@ -649,6 +659,7 @@ if($slmreglock == 1) {
 		</form>
 		<?php
 		mysql_close($baza);
+		}
 		} else {
 		?>
 		<p class="smpbns_error">Nie udało się wczytać ID wiadomości! Wpis nie może zostać zmodyfikowany!</p><br />
@@ -664,6 +675,16 @@ if($slmreglock == 1) {
 		if($id != NULL) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
+		if($myonly == 1) {
+			$query=mysql_query("SELECT user FROM ".$dbprefix."news_main WHERE id=".$id);
+		$user=mysql_fetch_array($query);
+		}
+		if($myonly == 1 AND $user['user'] != $_SESSION[$prefix."slm_username"]) {
+				?>
+				<p class="smpbns_error">Włączony jest tryb MyOnly - nie możesz moderować tego wpisu.</p><br />
+				<?php
+				mysql_close($baza);
+				} else {
 		$dball=mysql_query("SELECT * FROM ".$dbprefix."news_main");
 		$rows=mysql_num_rows($dball);
 		$query=mysql_query("DELETE FROM ".$dbprefix."news_main WHERE id=".$id);
@@ -682,11 +703,12 @@ if($slmreglock == 1) {
 			}
 			mysql_close($baza);
 			}
+		}
+				}
 		} else {
 		?>
 		<p class="smpbns_error">Nie udało się wczytać ID wiadomości! Wpis nie mógł zostać usunięty!</p><br />
 		<?php
-		}
 		}
 	} else {
 	?>

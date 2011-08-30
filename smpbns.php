@@ -437,7 +437,7 @@ if(file_exists("smpbns_settings.php")) {
 		if($slmreglock == 1) {
 	slm_loginpage_sub(1,0);	
 		} else {
-		slm_loginpage_sub();	
+		slm_loginpage_sub();
 		}
 	}
 	slm_userinfo();
