@@ -423,7 +423,7 @@ function parse($toparse) {
 ?>
 <html>
 <head>
-<title>Phitherek_' s SMPBNS - MOD: SLMmed - Główny plik systemu - ten tytuł można później zmienić</title>
+<title>Phitherek_' s SMPBNS - MOD: Comments - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
@@ -494,6 +494,15 @@ if(file_exists("smpbns_settings.php")) {
 		$umod=mysql_fetch_array($query);
 		?>
 		<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?> przez: <?php echo $umod['umod']; ?></p><br /><br />
+		<a class="smpbns_comments" href="smpbns_comments.php?action=list&postid=<?php echo $id; ?>">Komentarze (<?php
+			$query=mysql_query("SELECT * FROM ".$dbprefix."news_comments WHERE postid=".$id);
+			$comnum=mysql_num_rows($query);
+			if($comnum != NULL) {
+			echo($comnum);
+			} else {
+			echo(0);	
+			}
+			?>)</a><br /><br />
 		<?php
 		}
 	} else {
@@ -511,6 +520,7 @@ mysql_close($baza);
 <a class="smpbns_admin" href="smpbns_mod.php" title="Moderacja">Moderacja SMPBNS</a><br />
 <hr />
 <p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />
-MOD: SLMmed | &copy; 2011 by Phitherek_ | uses SLM | &copy; 2010-2011 by Phitherek_</p>
+MOD: SLMmed | &copy; 2011 by Phitherek_ | uses SLM | &copy; 2010-2011 by Phitherek_<br />
+MOD: Comments | &copyl 2011 by Phitherek_</p>
 </body>
 </html>

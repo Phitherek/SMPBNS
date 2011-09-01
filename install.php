@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SMPBNS - Instalacja</title>
+<title>Phitherek_' s SMPBNS - MOD: Comments - Instalacja</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>
 <body>
@@ -129,10 +129,23 @@ echo("Połączono z serwerem MySQL!<br />");
 mysql_select_db($_POST['dbname']);
 $zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_main (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), content TEXT, added TIMESTAMP, parse BOOLEAN NOT NULL, user VARCHAR(100), umod VARCHAR(100), PRIMARY KEY(id))");
 if($zapytanie == 1) {
-echo("Tabela została utworzona poprawnie!<br />");
+echo("Tabela dla postów została utworzona poprawnie!<br />");
+$zapytanie=mysql_query("CREATE TABLE ".$_POST['dbprefix']."news_comments (id INT NOT NULL AUTO_INCREMENT, content TEXT, added TIMESTAMP, user VARCHAR(100), postid INT, PRIMARY KEY(id))");
+if($zapytanie == 1) {
+echo("Tabela dla komentarzy została utworzona poprawnie!<br />");
 } else {
 ?>
-Błąd! Tabela nie została utworzona! Ustawienia nie zostaną zapisane!<br />
+Błąd! Tabela dla komentarzy nie została utworzona! Ustawienia nie zostaną zapisane!<br />
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="hidden" name="go" value="3" />
+<input type="submit" value="Powrót" />
+</form>
+<?php
+$fail=1;
+}
+} else {
+?>
+Błąd! Tabela dla postów nie została utworzona! Ustawienia nie zostaną zapisane!<br />
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="hidden" name="go" value="3" />
 <input type="submit" value="Powrót" />

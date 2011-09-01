@@ -1,7 +1,7 @@
 <html>
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Phitherek_' s SMPBNS - MOD: SLMmed - Logowanie</title>
+<title>Phitherek_' s SMPBNS - MOD: Comments - Logowanie</title>
 </head>
 <body>
 <?php

@@ -420,273 +420,64 @@ function parse($toparse) {
 	//echo("DEBUG: Function parse END <br /> OUTPUT: ".htmlspecialchars($output)."<br />");
 	return $output;
 }
-?>
-<html>
-<head>
-<title>Phitherek_' s SMPBNS - MOD: Comments - System moderacji - tytuł może być później zmieniony</title>
-<META http-equiv="content-type" content="text/html; charset=utf-8" />
-<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
-</head>
-<body>
-<?php
-if($_POST['setprefix'] == 1) {
-$prefixfile=fopen("smpbns_prefix.php","w");
-flock($prefixfile, LOCK_EX);
-fputs($prefixfile, '<?php'."\n");
-fputs($prefixfile, '$prefix="'.$_POST['prefix'].'";'."\n");
-fputs($prefixfile, '?>');
-flock($prefixfile, LOCK_UN);
-fclose($prefixfile);
-if(file_exists("smpbns_prefix.php")) {
-echo("Prefiks został zapisany pomyślnie!<br />");	
-} else {
-echo("Nie udało się zapisać pliku z prefiksem! Sprawdź uprawnienia katalogu i spróbuj ponownie!<br />");	
-}
-}
-if(file_exists("smpbns_prefix.php")) {
-include("smpbns_prefix.php");
-$prefixexists = true;
-} else {
-$prefixexists = false;	
-}
-if($prefixexists == true) {
-session_start();
-if (!isset($_SESSION[$prefix.'started'])) {
-session_regenerate_id();
-$_SESSION[$prefix.'started'] = true;
-}
 if(file_exists("smpbns_settings.php")) {
-	include("smpbns_settings.php");
-	include("slm_include/adminonly.php");
+include("smpbns_settings.php");
+global $prefix;
+global $prefixexists;
 include("slm_include/userinfo.php");
-include("slm_include/loginform.php");
-if($slmreglock == 1) {
-	slm_loginpage_sub(1,0);	
+if($_GET["action"] == "list") {
+	if(isset($_GET["postid"])) {
+		$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
+	mysql_select_db($dbname);
+	$query=mysql_query("SELECT * FROM ".$dbprefix."news_main WHERE id=".$_GET["postid"]);
+	if(!$query) {
+		echo('<p class="smpbns_error">Błąd: Nie udało się wczytać postu!');
+	} else {
+	$post = mysql_fetch_array($query);
+	?>
+	<html>
+	<head>
+	<title><?php echo $post["title"]; ?> - Komentarze - powered by Phitherek_' s SMPBNS MOD: Comments</title>
+	<META http-equiv="content-type" content="text/html; charset=utf-8" />
+	<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+	</head>
+	<body>
+	<?php
+	slm_userinfo();
+	if($post['title'] != NULL) {
+		if($post['parse'] == false OR $parse == NULL) {
+			?>
+			<h3 class="smpbns_title"><?php echo $post['title']; ?></h3><hr />
+			<?php
+			} else {
+			?>
+			<h3 class="smpbns_title"><?php echo parse($post['title']); ?></h3><hr />
+			<?php
+			}
 		} else {
-		slm_loginpage_sub();	
+		?>
+		<h3 class="smpbns_title">Brak tytułu</h3><hr />
+		<?php
 		}
-		slm_adminonly("smpbns.php","smpbns.php","Indeks systemu SMPBNS");
-		slm_userinfo();
-	if(file_exists("install.php")) {
-	?>
-	<p class="smpbns_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś install.php!</p><br />
-	<?php
-	}
-	if(file_exists("slm_install.php")) {
-	?>
-	<p class="smpbns_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś slm_install.php!</p><br /><br />
-	<?php
-	}
-	?>
-	<h2 class="smpbns_modmenu">Menu systemu moderacji:</h2><br /><br />
-	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_list" title="Wyświetl i moderuj aktualności">Wyświetl i moderuj aktualności</a><br />
-	<a class="smpbns_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=add_new" title="Dodaj nową wiadomość">Dodaj nową wiadomość</a><br />
-	<a class="suds_modmenu" href="register.php" title="Zarejestruj użytkownika SLM">Zarejestruj użytkownika SLM</a><br />
-	<a class="smpbns_modmenu" href="logout.php" title="Wyloguj">Wyloguj</a><br />
-	<hr />
-	<?php
-	if($_GET['action'] == "news_list") {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
-		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$dbprefix."news_main");
-		$rows=mysql_num_rows($dball);
-		if($rows != NULL) {
-			for($id = 1; $id <= $rows; $id++) {
-				$query=mysql_query("SELECT parse FROM ".$dbprefix."news_main WHERE id=".$id);
-				$parse=mysql_fetch_array($query);
-				$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
-				$title=mysql_fetch_array($query);
-			if($title != NULL) {
-			if($parse['parse'] == false OR $parse == NULL) {
-			?>
-			<h3 class="smpbns_title"><?php echo $title['title']; ?></h3><hr />
-			<?php
-			} else {
-			?>
-			<h3 class="smpbns_title"><?php echo parse($title['title']); ?></h3><hr />
-			<?php
-			}
-			} else {
-			?>
-			<h3 class="smpbns_title">Brak tytułu</h3><hr />
-			<?php
-			}
-				$query=mysql_query("SELECT content FROM ".$dbprefix."news_main WHERE id=".$id);
-				$content=mysql_fetch_array($query);
-				if($content != NULL) {
-				if($parse['parse'] == false OR $parse == NULL) {	
+		if($post['content'] != NULL) {
+		if($post['parse'] == false OR $parse == NULL) {	
 				?>
-				<p class="smpbns_news"><?php echo $content['content']; ?></p><hr />
+				<p class="smpbns_news"><?php echo $post['content']; ?></p><hr />
 				<?php
 				} else {
 				?>
-				<p class="smpbns_news"><?php echo parse($content['content']); ?></p><hr />
+				<p class="smpbns_news"><?php echo parse($post['content']); ?></p><hr />
 				<?php	
 				}
-				} else {
-				?>
-				<p class="smpbns_news">Brak treści</p><hr />
-				<?php
-				}
-				$query=mysql_query("SELECT user FROM ".$dbprefix."news_main WHERE id=".$id);
-				$user=mysql_fetch_array($query);
-				?>
-				<p class="smpbns_date">Wiadomość dodał(a): <?php echo $user['user']; ?></p><br /><br />
-				<?php
-				$query=mysql_query("SELECT added FROM ".$dbprefix."news_main WHERE id=".$id);
-				$added=mysql_fetch_array($query);
-				$query=mysql_query("SELECT umod FROM ".$dbprefix."news_main WHERE id=".$id);
-				$umod=mysql_fetch_array($query);
-				?>
-				<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $added['added']; ?> przez: <?php echo $umod['umod']; ?></p><br />
-				<?php
-				if($myonly == 1 AND $user['user'] != $_SESSION[$prefix."slm_username"]) {
-				?>
-				<p class="smpbns_info">Włączony jest tryb MyOnly - nie możesz moderować tego wpisu.</p><br />
-				<?php
-				} else {
-				?>
-				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_edit" method="post">
-				<input type="hidden" name="id" value=<?php echo $id; ?> />
-				<input type="submit" value="Edytuj" />
-				</form>
-				<br />
-				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=comments_list" method="post">
-				<input type="hidden" name="id" value=<?php echo $id; ?> />
-				<input type="submit" value="Edytuj komentarze" />
-				</form>
-				<br />
-				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_delete" method="post">
-				<input type="hidden" name="id" value=<?php echo $id; ?> />
-				<input type="submit" value="Usuń" />
-				</form>
-				<?php
-				}
-			}
 		} else {
 		?>
-		<p class="smpbns_info">Brak rekordów w bazie danych</p>
+		<p class="smpbns_news">Brak treści</p><hr />
 		<?php
 		}
-		mysql_close($baza);
-	} else if($_GET['action'] == "add_new") {
-	if($_POST['newset'] == 1) {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
-		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$dbprefix."news_main");
-		$numrows=mysql_num_rows($dball);
-		$ai=$numrows+1;
-		$query=mysql_query("ALTER TABLE ".$dbprefix."news_main AUTO_INCREMENT = ".$ai);
-		if($query != 1) {
 		?>
-		<p class=smpbns_error>Nie udało się ustawić poprawnej wartości AUTO_INCREMENT!</p>
-		<?php
-		} else {
-		if($_POST['parse'] == 1) {
-		$parse = true;	
-		} else {
-		$parse = 0;	
-		}
-		$query=mysql_query("INSERT INTO ".$dbprefix."news_main VALUES (NULL,".'"'.$_POST['title'].'"'.",".'"'.$_POST['content'].'"'.",NULL,".$parse.",".'"'.$_SESSION[$prefix.'slm_username'].'"'.",".'"'.$_SESSION[$prefix.'slm_username'].'"'.")");
-		if($query == 1) {
-		?>
-		<p class="smpbns_info">Wpis został dodany!</p><br />
-		<?php
-		} else {
-		?>
-		<p class="smpbns_error">Nie udało się dodać wpisu!</p><br />
-		<?php
-		}
-		}
-		mysql_close($baza);
-	} else {
-	?>
-	<h3 class="smpbns_title">Dodawanie nowego wpisu:</h3><br /><br />
-	<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=add_new" method="post">
-	<input type="text" name="title" /><br />
-	<textarea name="content" rows=50 cols=50></textarea><br />
-	<input type="checkbox" name="parse" value="1" <?php if($parsedefault == 1) echo "checked"; ?> /> <font class="smpbns_parse_checkbox_text">Włącz SMPBNS Code Parser dla tego wpisu</font><br />
-	<input type="hidden" name="newset" value="1" />
-	<input type="submit" value="Dodaj" />
-	</form>
-	<br />
-	<?php
-	}
-	} else if($_GET['action'] == "news_edit") {
-		if($_POST['edset'] == 1) {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
-		mysql_select_db($dbname);
-		if($_POST['parse'] == 1) {
-		$parse = true;	
-		} else {
-		$parse = 0;	
-		}
-		$query=mysql_query("UPDATE ".$dbprefix."news_main SET title=".'"'.$_POST['title'].'"'.",content=".'"'.$_POST['content'].'"'.",parse=".$parse.",umod=".'"'.$_SESSION[$prefix."slm_username"].'"'." WHERE id=".$_POST['id']);
-		if($query == 1) {
-		?>
-		<p class="smpbns_info">Wpis zaktualizowany pomyślnie!</p><br />
-		<?php
-		} else {
-		?>
-		<p class="smpbns_error">Nie udało się zaktualizować wpisu!</p><br />
-		<?php
-		}
-		} else {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
-		mysql_select_db($dbname);
-		$id = $_POST['id'];
-		if($id != NULL) {
-			if($myonly == 1) {
-			$query=mysql_query("SELECT user FROM ".$dbprefix."news_main WHERE id=".$id);
-		$user=mysql_fetch_array($query);
-		}
-		if($myonly == 1 AND $user['user'] != $_SESSION[$prefix."slm_username"]) {
-				?>
-				<p class="smpbns_error">Włączony jest tryb MyOnly - nie możesz moderować tego wpisu.</p><br />
-				<?php
-				mysql_close($baza);
-				} else {
-		$query=mysql_query("SELECT parse FROM ".$dbprefix."news_main WHERE id=".$id);
-		$parse=mysql_fetch_array($query);	
-		$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
-		$title=mysql_fetch_array($query);
-		$query=mysql_query("SELECT content FROM ".$dbprefix."news_main WHERE id=".$id);
-		$content=mysql_fetch_array($query);
-		?>
-		<h3 class=smpbns_title>Modyfikacja wpisu:</h3><br />
-		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=news_edit" method="post">
-		<input type="text" name="title" value="<?php echo $title['title']; ?>" /><br />
-		<textarea name="content" rows=50 cols=50><?php echo $content['content']; ?></textarea><br />
-		<input type="checkbox" name="parse" value="1" <?php if($parse['parse'] == true) echo "checked"; ?> /> <font class="smpbns_parse_checkbox_text">Włącz SMPBNS Code Parser dla tego wpisu</font><br />
-		<input type="hidden" name="edset" value="1" />
-		<input type="hidden" name="id" value="<?php echo $id; ?>" />
-		<input type="submit" value="Zapisz" />	
-		</form>
-		<?php
-		mysql_close($baza);
-		}
-		} else {
-		?>
-		<p class="smpbns_error">Nie udało się wczytać ID wiadomości! Wpis nie może zostać zmodyfikowany!</p><br />
-		<?php
-		mysql_close($baza);
-		}
-		}
-	} else if($_GET['action'] == "comments_list") {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
-		mysql_select_db($dbname);
-		$id = $_POST['id'];
-		if($id != NULL) {
-			if($myonly == 1) {
-			$query=mysql_query("SELECT user FROM ".$dbprefix."news_main WHERE id=".$id);
-		$user=mysql_fetch_array($query);
-		}
-		if($myonly == 1 AND $user['user'] != $_SESSION[$prefix."slm_username"]) {
-				?>
-				<p class="smpbns_error">Włączony jest tryb MyOnly - nie możesz moderować tego wpisu.</p><br />
-				<?php
-				mysql_close($baza);
-		} else {	
+		<p class="smpbns_date">Wiadomość dodał(a): <?php echo $post['user']; ?></p><br /><br />
+		<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $post['added']; ?> przez: <?php echo $post['umod']; ?></p><hr />
+		<p class="smpbns_comments_list_title">Komentarze:</p><br /><br /><?	
 		$query=mysql_query("SELECT * FROM ".$dbprefix."news_comments WHERE postid=".$id);
 		$num = mysql_num_rows($query);
 		if($num != NULL) {
@@ -704,6 +495,9 @@ if($slmreglock == 1) {
 				<p class="smpbns_comment_user">Dodał(a): <?php echo $row['user']; ?></p><br />
 				<p class="smpbns_comment_date">Ostatnia modyfikacja komentarza: <?php echo $row['added']; ?></p><br />
 				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=comment_edit" method="post">
+				<?php
+				if($_SESSION[$prefix."slm_username"] == $row['user']) {
+				?>
 				<input type="hidden" name="id" value=<?php echo $row['id']; ?> />
 				<input type="submit" value="Edytuj" />
 				</form>
@@ -714,20 +508,73 @@ if($slmreglock == 1) {
 				</form>
 				<hr />
 				<?php
+				}
 		}
 		} else {
 		echo('<p class="smpbns_info">Brak komentarzy</p><br /><br />');	
 		}
-		mysql_close($baza);
+		if($_SESSION[$prefix."slm_loggedin"] == 1) {
+			?>
+			<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=comment_add" method="post">
+			<textarea cols=25 rows=25 name="content"></textarea><br />
+			<input type="hidden" name="postid" value=<?php echo $row['postid']; ?> />
+			<input type="submit" value="Dodaj komentarz" />
+			</form>
+			<?php
 		}
-		} else {
-		?>
-		<p class="smpbns_error">Nie udało się wczytać ID wiadomości! Nie można wyświetlić komentarzy!</p><br />
-		<?php
-		mysql_close($baza);
-		}
-	} else if($_GET['action'] == "comment_edit") {
-		if($_POST['cedset'] == 1) {
+	}
+	mysql_close($baza);
+	} else {
+	echo('<p class="smpbns_error">Nie udało się wczytać ID postu!</p><br />');	
+	}
+	?>
+	<br />
+	<?php
+} else if($_GET['action'] == "comment_add") {
+?>
+<html>
+<head>
+<title>Dodawanie komentarza - powered by Phitherek_' s SMPBNS MOD: Comments</title>
+<META http-equiv="content-type" content="text/html; charset=utf-8" />
+<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+</head>
+<body>
+<?php
+slm_userinfo();
+?>
+<h3 class="smpbns_title">Dodawanie komentarza</h3><br />
+<?php
+if(isset($_POST["postid"])) {
+	if($_SESSION[$prefix."slm_loggedin"] == 1) {
+		$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
+	mysql_select_db($dbname);
+	$query=mysql_query("INSERT INTO ".$dbprefix."news_comments VALUES(NULL,".'"'.$content.'",'."NULL,".'"'.$_SESSION[$prefix."slm_username"].'",'.$postid.")");
+	if($query) {
+	echo('<p class="smpbns_info">Komentarz dodany pomyślnie!</p>');	
+	} else {
+	echo('<p class="smpbns_error">Nie udało się dodać komentarza!</p><br />');	
+	}
+	} else {
+	echo('<p class="smpbns_error">Nie jesteś zalogowany!</p><br />');	
+	}
+} else {
+	echo('<p class="smpbns_error">Nie udało się wczytać ID postu!</p><br />');
+}
+} else if($_GET['action'] == "comment_edit") {
+?>
+<html>
+<head>
+<title>Modyfikacja komentarza - powered by Phitherek_' s SMPBNS MOD: Comments</title>
+<META http-equiv="content-type" content="text/html; charset=utf-8" />
+<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+</head>
+<body>
+<?php
+slm_userinfo();
+?>
+<h3 class="smpbns_title">Modyfikacja komentarza</h3><br />
+<?php
+if($_POST['cedset'] == 1) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
 		$query=mysql_query("UPDATE ".$dbprefix."news_comments SET content=".'"'.$_POST['content'].'"'." WHERE id=".$_POST['id']);
@@ -745,10 +592,13 @@ if($slmreglock == 1) {
 		mysql_select_db($dbname);
 		$id = $_POST['id'];
 		if($id != NULL) {
+			if($_SESSION[$prefix."slm_loggedin" == 1]) {
+		$query=mysql_query("SELECT user FROM ".$dbprefix."news_comments WHERE id=".$id);
+		$user=mysql_fetch_array($query);
+		if($_SESSION[$prefix."slm_username"] == $user["user"]) {
 		$query=mysql_query("SELECT content FROM ".$dbprefix."news_comments WHERE id=".$id);
 		$content=mysql_fetch_array($query);
 		?>
-		<h3 class=smpbns_title>Modyfikacja komentarza:</h3><br />
 		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=comment_edit" method="post">
 		<textarea name="content" rows=25 cols=25><?php echo $content['content']; ?></textarea><br />
 		<input type="hidden" name="cedset" value="1" />
@@ -756,103 +606,92 @@ if($slmreglock == 1) {
 		<input type="submit" value="Zapisz" />	
 		</form>
 		<?php
+		} else {
+			?>
+			<p class="smpbns_error">Nie jesteś autorem tego komentarza! Komentarz nie może zostać zmodyfikowany!</p><br />
+			<?php
+		}
 		mysql_close($baza);
+			} else {
+			?>
+			<p class="smpbns_error">Nie jesteś zalogowany! Komentarz nie może zostać zmodyfikowany!</p><br />
+			<?php
+			}
 		} else {
 		?>
 		<p class="smpbns_error">Nie udało się wczytać ID komentarza! Komentarz nie może zostać zmodyfikowany!</p><br />
 		<?php
 		mysql_close($baza);
 		}
-		}
-	} else if($_GET['action'] == "comment_delete") {
-		?>
-		<h3 class="smpbns_title">Usuwanie komentarza</h3><br />
-		<?php
-		$id=$_POST['id'];
+		}	
+} else if($_GET['action'] == "comment_delete") {
+	?>
+<html>
+<head>
+<title>Usuwanie komentarza - powered by Phitherek_' s SMPBNS MOD: Comments</title>
+<META http-equiv="content-type" content="text/html; charset=utf-8" />
+<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+</head>
+<body>
+<?php
+slm_userinfo();
+?>
+<h3 class="smpbns_title">Usuwanie komentarza</h3><br />
+<?php
+$id=$_POST['id'];
 		if($id != NULL) {
+			if($_SESSION[$prefix."slm_loggedin" == 1]) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
+		$query=mysql_query("SELECT user FROM ".$dbprefix."news_comments WHERE id=".$id);
+		$user=mysql_fetch_array($query);
+		if($_SESSION[$prefix."slm_username"] == $user['user']) {
 		$query=mysql_query("DELETE FROM ".$dbprefix."comments_main WHERE id=".$id);
 		if($query == 1) {
 		?>
 		<p class=smpbns_info>Komentarz został pomyślnie usunięty!</p><br />
 		<?php
-			mysql_close($baza);
 		}
+		} else {
+			?>
+			<p class="smpbns_error">Nie jesteś autorem tego komentarza! Komentarz nie może zostać usunięty!</p><br />
+			<?php
+		}
+			mysql_close($baza);
+			} else {
+				?>
+			<p class="smpbns_error">Nie jesteś zalogowany! Komentarz nie może zostać usunięty!</p><br />
+			<?php
+			}
 		} else {
 		?>
 		<p class="smpbns_error">Nie udało się wczytać ID komentarza! komentarz nie mógł zostać usunięty!</p><br />
 		<?php
 		}
-	} else if($_GET['action'] == "news_delete") {
-		?>
-		<h3 class="smpbns_title">Usuwanie wpisu</h3><br />
-		<?php
-		$id=$_POST['id'];
-		if($id != NULL) {
-		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
-		mysql_select_db($dbname);
-		if($myonly == 1) {
-			$query=mysql_query("SELECT user FROM ".$dbprefix."news_main WHERE id=".$id);
-		$user=mysql_fetch_array($query);
-		}
-		if($myonly == 1 AND $user['user'] != $_SESSION[$prefix."slm_username"]) {
-				?>
-				<p class="smpbns_error">Włączony jest tryb MyOnly - nie możesz moderować tego wpisu.</p><br />
-				<?php
-				mysql_close($baza);
-				} else {
-		$dball=mysql_query("SELECT * FROM ".$dbprefix."news_main");
-		$rows=mysql_num_rows($dball);
-		$query=mysql_query("DELETE FROM ".$dbprefix."news_main WHERE id=".$id);
-		if($query == 1) {
-		?>
-		<p class=smpbns_info>Wpis został pomyślnie usunięty!</p><br />
-		<?php
-			$nid=$id+1;
-			if($nid<=$rows) {
-			for($i=$nid;$i<=$rows;$i++) {
-			$query=mysql_query("SELECT added FROM ".$dbprefix."news_main WHERE id=".$i);
-			$added=mysql_fetch_array($query);
-			$sid=$i-1;
-			$query=mysql_query("UPDATE ".$dbprefix."news_main SET id=".$sid." WHERE id=".$i);
-			$query=mysql_query("UPDATE ".$dbprefix."news_main SET added=".$added['added']." WHERE id=".$sid);
-			}
-			mysql_close($baza);
-			}
-		}
-				}
-		} else {
-		?>
-		<p class="smpbns_error">Nie udało się wczytać ID wiadomości! Wpis nie mógł zostać usunięty!</p><br />
-		<?php
-		}
-	} else {
-	?>
-	<p class="smpbns_text">Witaj w systemie moderacji SMPBNS! Wybierz działanie z menu, znajdującego się na górze strony. Kiedy skończysz pracę, wyloguj się.</p>
-	<?php
-	}
+} else {
+?>
+	<html>
+	<head>
+	<title>Brak akcji! - Komentarze - powered by Phitherek_' s SMPBNS MOD: Comments</title>
+	<META http-equiv="content-type" content="text/html; charset=utf-8" />
+	<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+	</head>
+	<body>
+	<p class="smpbns_error">Brak akcji!</p><br />
+	<?php	
+}
 } else {
 ?>
 <p class="smpbns_error">Plik ustawień nie istnieje! Czy na pewno uruchomiłeś install.php?</p>
 <?php
 }
-} else {
-echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej instalacji SMPBNS. NIGDY nie instaluj dwóch systemów z tym samym prefiksem! Jeżeli jest to twoja pierwsza i jedyna instalacja SMPBNS, zaleca się pozostawienie domyślnego prefiksu.<br />");
-?>
-<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-<input type="text" name="prefix" value="smpbns_" /><br />
-<input type="hidden" name="setprefix" value="1" />
-<input type="submit" value="Ustaw prefiks i kontynuuj" />
-</form>
-<?php
-}
 ?>
 <br />
-<a class="smpbns_main_link" href="smpbns.php" title="Indeks systemu SMPBNS">Indeks systemu SMPBNS</a><br /><br />
-<a class="suds_slmadmin" href="slm_admin.php">Administracja SLM</a><hr />
+<a class="smpbns_main_link" href="smpbns.php">Indeks systemu SMPBNS</a><br />
+<a class="smpbns_admin" href="smpbns_mod.php">Moderacja</a><br />
+<hr />
 <p class="smpbns_footer">Powered by <a class="smpbns_footer" href="http://www.smpbns.phitherek.cba.pl" title="SMPBNS">SMPBNS</a> | &copy; 2009-2011 by Phitherek_<br />
 MOD: SLMmed | &copy; 2011 by Phitherek_ | uses SLM | &copy; 2010-2011 by Phitherek_<br />
-MOD: Comments | &copy; 2011 by Phitherek_</p>
+MOD: Comments | &copyl 2011 by Phitherek_</p>
 </body>
 </html>
