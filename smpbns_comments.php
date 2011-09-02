@@ -478,7 +478,7 @@ if($_GET["action"] == "list") {
 		<p class="smpbns_date">Wiadomość dodał(a): <?php echo $post['user']; ?></p><br /><br />
 		<p class="smpbns_date">Ostatnia aktualizacja wiadomości: <?php echo $post['added']; ?> przez: <?php echo $post['umod']; ?></p><hr />
 		<p class="smpbns_comments_list_title">Komentarze:</p><br /><br /><?	
-		$query=mysql_query("SELECT * FROM ".$dbprefix."news_comments WHERE postid=".$id);
+		$query=mysql_query("SELECT * FROM ".$dbprefix."news_comments WHERE postid=".$_GET['postid']);
 		$num = mysql_num_rows($query);
 		if($num != NULL) {
 		while($row = mysql_fetch_array($query)) {
@@ -494,10 +494,10 @@ if($_GET["action"] == "list") {
 				?>
 				<p class="smpbns_comment_user">Dodał(a): <?php echo $row['user']; ?></p><br />
 				<p class="smpbns_comment_date">Ostatnia modyfikacja komentarza: <?php echo $row['added']; ?></p><br />
-				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=comment_edit" method="post">
 				<?php
 				if($_SESSION[$prefix."slm_username"] == $row['user']) {
 				?>
+				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=comment_edit" method="post">
 				<input type="hidden" name="id" value=<?php echo $row['id']; ?> />
 				<input type="submit" value="Edytuj" />
 				</form>
@@ -506,9 +506,11 @@ if($_GET["action"] == "list") {
 				<input type="hidden" name="id" value=<?php echo $row['id']; ?> />
 				<input type="submit" value="Usuń" />
 				</form>
-				<hr />
 				<?php
 				}
+				?>
+				<hr />
+				<?php
 		}
 		} else {
 		echo('<p class="smpbns_info">Brak komentarzy</p><br /><br />');	
@@ -517,7 +519,7 @@ if($_GET["action"] == "list") {
 			?>
 			<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=comment_add" method="post">
 			<textarea cols=25 rows=25 name="content"></textarea><br />
-			<input type="hidden" name="postid" value=<?php echo $row['postid']; ?> />
+			<input type="hidden" name="postid" value=<?php echo $_GET['postid']; ?> />
 			<input type="submit" value="Dodaj komentarz" />
 			</form>
 			<?php
@@ -548,7 +550,7 @@ if(isset($_POST["postid"])) {
 	if($_SESSION[$prefix."slm_loggedin"] == 1) {
 		$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 	mysql_select_db($dbname);
-	$query=mysql_query("INSERT INTO ".$dbprefix."news_comments VALUES(NULL,".'"'.$content.'",'."NULL,".'"'.$_SESSION[$prefix."slm_username"].'",'.$postid.")");
+	$query=mysql_query("INSERT INTO ".$dbprefix."news_comments VALUES(NULL,".'"'.$_POST["content"].'",'."NULL,".'"'.$_SESSION[$prefix."slm_username"].'",'.$_POST["postid"].")");
 	if($query) {
 	echo('<p class="smpbns_info">Komentarz dodany pomyślnie!</p>');	
 	} else {
@@ -592,7 +594,7 @@ if($_POST['cedset'] == 1) {
 		mysql_select_db($dbname);
 		$id = $_POST['id'];
 		if($id != NULL) {
-			if($_SESSION[$prefix."slm_loggedin" == 1]) {
+			if($_SESSION[$prefix."slm_loggedin"] == 1) {
 		$query=mysql_query("SELECT user FROM ".$dbprefix."news_comments WHERE id=".$id);
 		$user=mysql_fetch_array($query);
 		if($_SESSION[$prefix."slm_username"] == $user["user"]) {
@@ -640,17 +642,21 @@ slm_userinfo();
 <?php
 $id=$_POST['id'];
 		if($id != NULL) {
-			if($_SESSION[$prefix."slm_loggedin" == 1]) {
+			if($_SESSION[$prefix."slm_loggedin"] == 1) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
 		$query=mysql_query("SELECT user FROM ".$dbprefix."news_comments WHERE id=".$id);
 		$user=mysql_fetch_array($query);
 		if($_SESSION[$prefix."slm_username"] == $user['user']) {
-		$query=mysql_query("DELETE FROM ".$dbprefix."comments_main WHERE id=".$id);
+		$query=mysql_query("DELETE FROM ".$dbprefix."news_comments WHERE id=".$id);
 		if($query == 1) {
 		?>
 		<p class=smpbns_info>Komentarz został pomyślnie usunięty!</p><br />
 		<?php
+		} else {
+		?>
+		<p class=smpbns_error>Nie udało się usunąć komentarza!</p><br />
+		<?php	
 		}
 		} else {
 			?>

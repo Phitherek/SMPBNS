@@ -190,7 +190,7 @@ echo("Ustawienia zostały zapisane!<br />");
 } else {
 echo("Nie można było zapisać ustawień! Sprawdź, czy katalog z plikami systemu SMPBNS ma uprawnienia 777 (lub rwxrwxrwx), jeżeli nie, to zmień je, a następnie usuń tabelę (prefix)_news_main (i bazę danych) z serwera MySQL, zakończ sesję przeglądarki, a następnie uruchom ten plik install.php ponownie!<br />");
 }
-echo("<br /> Koniec instalacji! WAŻNE: Skasuj ten plik install.php z serwera, aby nikt nie mógł zmienić Twoich ustawień! Aby korzystać z SUDS z modem SLMlock, musisz zainstalować SLM. W tym celu uruchom <a href=".'"slm_install.php"'.">slm_install.php</a>, jeżeli jeszcze tego nie zrobiłeś/aś.");
+echo("<br /> Koniec instalacji! WAŻNE: Skasuj ten plik install.php z serwera, aby nikt nie mógł zmienić Twoich ustawień! Aby korzystać z SMPBNS z modem Comments, musisz zainstalować SLM. W tym celu uruchom <a href=".'"slm_install.php"'.">slm_install.php</a>, jeżeli jeszcze tego nie zrobiłeś/aś.");
 }
 }
 } else {

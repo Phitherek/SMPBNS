@@ -772,12 +772,16 @@ if($slmreglock == 1) {
 		if($id != NULL) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$query=mysql_query("DELETE FROM ".$dbprefix."comments_main WHERE id=".$id);
+		$query=mysql_query("DELETE FROM ".$dbprefix."news_comments WHERE id=".$id);
 		if($query == 1) {
 		?>
 		<p class=smpbns_info>Komentarz został pomyślnie usunięty!</p><br />
 		<?php
 			mysql_close($baza);
+		} else {
+		?>
+		<p class=smpbns_error>Nie udało się usunąć komentarza!</p><br />
+		<?php	
 		}
 		} else {
 		?>
