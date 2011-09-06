@@ -647,7 +647,7 @@ if($slmreglock == 1) {
 				mysql_close($baza);
 				} else {
 		$query=mysql_query("SELECT parse FROM ".$dbprefix."news_main WHERE id=".$id);
-		$parse=mysql_fetch_array($query);	
+		$parse=mysql_fetch_array($query);
 		$query=mysql_query("SELECT title FROM ".$dbprefix."news_main WHERE id=".$id);
 		$title=mysql_fetch_array($query);
 		$query=mysql_query("SELECT content FROM ".$dbprefix."news_main WHERE id=".$id);
