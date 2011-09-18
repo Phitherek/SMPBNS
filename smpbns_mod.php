@@ -813,6 +813,16 @@ if($slmreglock == 1) {
 		?>
 		<p class=smpbns_info>Wpis został pomyślnie usunięty!</p><br />
 		<?php
+		$query = mysql_query("DELETE FROM ".$dbprefix."news_comments WHERE postid=".$id);
+		if($query == 1) {
+		?>
+		<p class=smpbns_info>Komentarze do wpisu zostały pomyślnie usunięte!</p><br />
+		<?php		
+		} else {
+		?>
+		<p class=smpbns_error>Nie udało się usunąć komentarzy do wpisu!</p><br />
+		<?php
+		}
 			$nid=$id+1;
 			if($nid<=$rows) {
 			for($i=$nid;$i<=$rows;$i++) {
